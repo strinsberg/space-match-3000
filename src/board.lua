@@ -19,10 +19,9 @@ end
 local function emptyBoard(rows, columns)
     items = {}
     for i = 1, rows do
-        local row = {}
-        items[i] = row -- Store an empty array in items for each row
+        items[row] = {} -- Store an empty array in items for each row
         for j = 1, columns do
-            row[j] = 0 -- Store a 0 at each position in the row array
+            items[row][column] = 0 -- Store a 0 at each position in the row array
         end
     end
     return items
@@ -30,11 +29,11 @@ end
 
 
 -- Represents a game board
-local Board = Class()
+local GameBoard = Class()
 
 
 -- Creates a board with a number of rows and columns
-function Board:init(rows, columns)
+function GameBoard:init(rows, columns)
     self.rows = rows
     self.columns = columns
     self.items = emptyBoard(rows, columns)
