@@ -6,6 +6,7 @@ next work on the code refactoring and if a few small improvments come from it th
 
 new functionality for future versions----------------------------------
 
+- must not be allowed to get a high score with 0
 - make the time count down instead of up
 - Before any more versions there needs to be a heavy refactoring to make it easier to
     add new functionality and make the code much easier to understand etc.
@@ -79,6 +80,11 @@ new functionality for future versions----------------------------------
     make it cleaner. This algorithm is identical except it loops through the columns on one and the
     rows on the other. probably it could be broken out into the logic for one check and have the
     loop come outside that function?
+- modes like no refil, dynamic update(puzzle quest style), normal. could replace the modes and the limit
+    could be replaced by a limit object. Mode would then be a state that had the game or gameboard as its
+    context maybe? or at least the gameState would have to call mode specific click and update methods
+    for the running of the game. Would be very cool I think to get this availability so that
+    I could make the game a little more interesting.
 
 
 Refactoring specifics------------------------------------------------------
@@ -102,3 +108,10 @@ Possible new classes to incorprate other elements
 - match3 game
 - block (what I called an item before)
 - better animations
+
+
+New Setup-----------------------------------
+App is the main class
+- it gets a state, difficulty(probably a number value), mode, limit, menus, game(which has a board)
+- for now just get the main menu and game state working
+- get difficulty and refill mode with endless limit working

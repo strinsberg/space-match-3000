@@ -1,60 +1,47 @@
 local M = {}
 
 -- Class for menus
-local menu = {title = "Menu Title", items = {}}
+local Menu = Class()
 
-function menu:new (o)
-    o = o or {}
-    self.__index = self
-    setmetatable(o, self)
-    return o
+-- Create an instance of class Menu
+function Menu:init(title)
+    self.title = title
+    self.items = {}
 end
 
-
--- Class for menu items
-local menuItem = {id = "1", text = "Menu Item", action = nil}
-
-function menuItem:new (o)
-    o = o or {}
-    self.__index = self
-    setmetatable(o, self)
-    return o
+-- Add an item to the menu
+function Menu:add(menuItem)
+    self.items[menuItem.id] = menuItem
 end
 
-
--- Adds a menu item to the menu
-function menu:addItem (id, text, action)
-    local menuItem = menuItem:new{id = id, text = text, action = action}
-    for i, item in ipairs(self.items) do
-        if item.id == id then
-            return
-        end
+-- Perform the action of a menu item
+function Menu:action(id)
+    if self.items[id] then
+        self.items[id].action()
     end
-    self.items[#self.items + 1] = menuItem
 end
 
-
--- Remove a menu item
-function menu:removeItem (itemId)
-    for i, item in ipairs(self.items) do
-        if item.id == itemId then
-            table.remove(self.items, i)
-        end
+-- Remove an item from the menu
+function Menu:remove(menuItem)
+    if self.items[id] then
+        self.items[id] = nil
     end
 end
 
 
--- Do the action of a menu item if there is one
-function menu:action (itemId)
-    for i, item in ipairs(self.items) do
-        if item.id == itemId then
-            item.action()
-        end
-    end
+-- Class for items in a menu
+local MenuItem = Class()
+
+-- Creates an instance of class menu item
+function MenuItem:init(id, text, action)
+    self.id = id
+    self.text = text
+    self.action = action
 end
+
 
 -- Add objects
-M.menu = menu
-M.menuItem = menuItem
+M.Menu = Menu
+M.MenuItem = MenuItem
 
 return M
