@@ -1,58 +1,60 @@
 local M = {}
 
--- Class for menus ----------------------------------------
-local Menu = Class()
+-- Class for menus
+local menu = {title = "Menu Title", items = {}}
 
--- Create an instance of class Menu
-function Menu:init(title)
-    self.title = title
-    self.items = {}
+function menu:new (o)
+    o = o or {}
+    self.__index = self
+    setmetatable(o, self)
+    return o
 end
 
--- Add an item to the menu
-function Menu:add(menuItem)
-    self.items[menuItem.id] = menuItem
+
+-- Class for menu items
+local menuItem = {id = "1", text = "Menu Item", action = nil}
+
+function menuItem:new (o)
+    o = o or {}
+    self.__index = self
+    setmetatable(o, self)
+    return o
 end
 
--- Perform the action of a menu item
-function Menu:action(id, state)
-    if self.items[id] then
-        self.items[id].action(state)
+
+-- Adds a menu item to the menu
+function menu:addItem (id, text, action)
+    local menuItem = menuItem:new{id = id, text = text, action = action}
+    for i, item in ipairs(self.items) do
+        if item.id == id then
+            return
+        end
+    end
+    self.items[#self.items + 1] = menuItem
+end
+
+
+-- Remove a menu item
+function menu:removeItem (itemId)
+    for i, item in ipairs(self.items) do
+        if item.id == itemId then
+            table.remove(self.items, i)
+        end
     end
 end
 
--- Remove an item from the menu
-function Menu:remove(id)
-    if self.items[id] then
-        self.items[id] = nil
+
+-- Do the action of a menu item if there is one
+function menu:action (itemId)
+    for i, item in ipairs(self.items) do
+        if item.id == itemId then
+            item.action()
+        end
     end
 end
-
--- Get menu oredered by position
-function Menu:getOrderedMenu()
-    local orderedMenu = {}
-    for _, item in pairs(self.items) do
-        orderedMenu[#orderedMenu + 1] = item
-    end
-    table.sort(orderedMenu, function(a, b) return a.position < b.position end)
-    return orderedMenu
-end
-
-
--- Class for items in a menu ----------------------------------
-local MenuItem = Class()
-
--- Creates an instance of class menu item
-function MenuItem:init(position, id, text, action)
-    self.position = position
-    self.id = id
-    self.text = text
-    self.action = action
-end
-
 
 -- Add objects
-M.Menu = Menu
-M.MenuItem = MenuItem
+M.menu = menu
+M.menuItem = menuItem
 
 return M
