@@ -1,66 +1,6 @@
-Class = require'src.class'
-view = require'src.view'
+Class = require'src.Class'
+State = require'src.gameState.State'
 
--- Probably so that some of this stuff can have update and key handling split into better method
--- Inidividual states should be in their own files
--- a package can be created for state
-
-local M = {}
-
-
--- The Inteface for all states----------------------------------------
-local State = Class()
-
-function State:init(app)
-    -- The code needed to construct the state
-    self.app = app
-end
-
-function State:update(dt)
-    -- All code to run during the update phase
-end
-
-function State:mousePressed(x, y, button)
-    -- All code to handle a mouse press event
-end
-
-function State:keyPressed(key)
-    -- All code to handle a key press event
-end
-
-function State:draw(dt)
-    -- Some connection to the code that will do the view for the state
-    -- Do not write render code in here, instead call veiw functions for
-    -- -- the state. That way all the drawing code can be replaced without
-    -- -- having to change the state code.
-end
-
-
--- The main menu state------------------------------------------
-local MainMenuState = Class(State)
-
-function MainMenuState:init(app)
-    State.init(self, app)
-end
-
-function MainMenuState:update(dt)
-    -- Nothing
-end
-
-function MainMenu:mousePressed(x, y, button)
-    -- Nothing
-end
-
-function MainMenuState:mousePressed(key)
-    app.menu:action(key)
-end
-
-function MainMenuState:draw(dt)
-    view.drawMainMenu(dt)
-end
-
-
--- Game state ----------------------------------------------
 local GameState = Class(State)
 
 function GameState:init(app)
@@ -70,7 +10,7 @@ end
 function GameState:update(dt)
     -- If the game is over
     if app.game.isOver then
-        app.chagneState(GameOverState(app))
+        app.chagneState(MainMenuState(app)) -- Change this to GameOverState(app) after initial testing
     end
     
     -- If a move has been made then check for matches
@@ -121,5 +61,4 @@ function GameState:draw(dt)
     view.drawGame(dt)
 end
 
-
-return M
+return GameState

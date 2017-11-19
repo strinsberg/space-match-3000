@@ -109,9 +109,62 @@ Possible new classes to incorprate other elements
 - block (what I called an item before)
 - better animations
 
+-- Classes and Apis-------------------------------
+App(info)
+- fields
+    - info
+    - windowDimensions
+    - game
+    - state
 
-New Setup-----------------------------------
-App is the main class
-- it gets a state, difficulty(probably a number value), mode, limit, menus, game(which has a board)
-- for now just get the main menu and game state working
-- get difficulty and refill mode with endless limit working
+- methods
+    - changeState(newState)
+
+State(app)
+- Fields
+    - app
+    - screen
+    - menu
+    - gameSettingsFactory -- to create a game settings object
+
+-Methods
+    - update(dt)
+    - draw()
+    - mousePressed(x, y, button)
+    - keyPressed(key)
+
+Screen(app)
+- fields
+    - app
+    - mainScreenArea
+    -- Subclasses may declare other Screen areas
+
+- Methods
+    - draw()
+
+Game(gameSettings)
+- Feilds
+    - gameSettings
+    - gameBoard
+    - isOver
+    - wasMoveMade
+    - shouldCheckForMatches
+    - score
+
+- Methods
+    
+
+Match3Board(rows, columns, numColors)
+- Fields
+    - rows
+    - columns
+    - numColors
+    - board
+
+- Methods
+    - setNew()
+    - getMatches()
+    - refill(refillDirection) - returns positions of blocks that are moving
+    - HasMove() - returns a position of a block with a possible move
+    - switchBlocks(block1, block2)
+    - isBlockMatched(block)
