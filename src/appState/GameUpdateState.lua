@@ -1,6 +1,10 @@
 Class = require'src.Class'
 AppState = require'src.appState.AppState'
 
+-- Needs to inherit from the gamestate so that it can share those methods.
+-- this way anything that needs to be in both can be. mostly the draw function
+-- same goes for the pause state
+
 local GameUpdateState = Class(AppState)
 
 function GameUpdateState:init()

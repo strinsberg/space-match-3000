@@ -7,6 +7,8 @@ HelpState = require('src/appState/HelpState')
 HighScoreState = require('src/appState/HighScoreState')
 GameState = require('src/appState/GameState')
 GameUpdateState = require('src/appState/GameUpdateState')
+GameOverState = require('src/appState/GameOverState')
+NameEntryState = require('src/appState/NameEntryState')
 
 -- Get new random number set
 math.randomseed( os.time() )
@@ -30,6 +32,11 @@ hintPosition = nil
 helpString = "Menu items can be activated with the key in brackets.\nEx. (q)uit - press \"q\" to quit.\n\nIn game the \"left-mouse-button\" selects an item. If the next \"left\" click is on an adjacent item the selected item will be switched with that item.\nThe \"right-mouse-button\" removes the selection.\n\nPressing \"h\" during the game will highlight an item that can be matched, \"p\" will pause and return to the main menu, and \"q\" will end the game prematurely."
 validChars = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q",
         "r", "s", "t", "u", "v", "w", "x", "y", "z"}
+    
+ratioX = 1
+ratioY = 1
+screenW = 800
+screenH = 640
 
 -- Change the difficulty
 function cycleDifficulty()
@@ -142,6 +149,8 @@ hState = HelpState()
 sState = HighScoreState()
 gState = GameState()
 guState = GameUpdateState()
+oState = GameOverState()
+nState = NameEntryState()
 
 -- Allows for a high score screen
 
@@ -180,10 +189,11 @@ end
 
 -- Game updates --------------------------------------
 function love.update(dt)
-    --[[ Cap frame rate at something close to 30 fps
-    if dt < 1/30 then
-        love.timer.sleep((1/30) - dt)
-    end--]]
+    
+    function love.resize(w, h)
+        ratioX = w / screenW
+        ratioY = h / screenH
+    end
     
     -- Game state specific updates--------------------------------
     if state == MENU then
@@ -245,48 +255,11 @@ function love.update(dt)
             gState:keyPressed(key)
 
         elseif state == END then
-            if key == 'return' then
-                -- get all high scores for this mode
-                local scores = {}
-                local diff = game.diffToString(gameDifficulty)
-                local mode = game.modeSaveString(gameMode)
-                -- if the players score is a high score go to name entry screen
-                for _, score in ipairs(highScores[diff][mode]) do
-                    if board.score > score.score or
-                            (#highScores[diff][mode] < 10 and board.score > 0) then
-                        state = NAME
-                        return
-                    end
-                end
-                -- if players score is not a high score just go straight to the score screen
-                state = SCORE
-            end
+            oState:keyPressed(key)
         
-        -- Enter a name for a high score
         elseif state == NAME then
-            if key == 'backspace' and #gName > 0 then
-                gName[#gName] = nil
-            elseif key == 'return' then
-                local diff = game.diffToString(gameDifficulty)
-                local gmode = game.modeSaveString(gameMode)
-                highScores[diff][gmode][#highScores[diff][gmode] + 1] = {mode = gmode,
-                        difficulty = diff, name = table.concat(gName, ""), score = board.score}
-                state = SCORE
-                -- sorts the table by score from highest to lowest
-                table.sort(highScores[diff][gmode], function(a,b) return a.score>b.score end)
-                -- If there are more than 10 scores remove the lowest score
-                if #highScores[diff][gmode] > 10 then
-                    highScores[diff][gmode][#highScores[diff][gmode]] = nil
-                end
-                serial.writeHighScores(highScores)
-            else
-                for _, c in ipairs(validChars) do
-                    if key == c then
-                        gName[#gName + 1] = key:upper()
-                    end
-                end
-            end
-        
+            nState:keyPressed(key)
+            
         elseif state == SCORE then
             sState:keyPressed(key)
         
@@ -302,9 +275,9 @@ end
 -- All output --------------------------------------------
 function love.draw(dt)
     
-    love.graphics.draw(background, 0, 0)
+    love.graphics.draw(background, 0, 0, 0, ratioX, ratioY)
     love.graphics.setFont(largerFont)
-    love.graphics.printf(gameTitle, 0, 40, 800, 'center')
+    love.graphics.printf(gameTitle, 0, 40, 800, 'center', 0, ratioX, ratioY)
     love.graphics.setFont(font)
     
     if state == GAME then
@@ -317,18 +290,10 @@ function love.draw(dt)
         mmState:draw()
         
     elseif state == END then
-        love.graphics.printf("Game Over", gameArea.x, gameArea.y, 320, 'center')
-        love.graphics.printf(string.format("Final Score: %s", board.score),
-                gameArea.x, gameArea.y + 80, 320, 'center')
-        love.graphics.printf("(enter) to continue", gameArea.x,
-            gameArea.y + 380, 320, 'center')
+        oState:draw()
     
     elseif state == NAME then
-        love.graphics.printf("You got a high score!", gameArea.x, gameArea.y, 320, 'center')
-        love.graphics.printf("Enter your name", gameArea.x, gameArea.y + 80, 320, 'center')
-        love.graphics.printf(table.concat(gName, ""), gameArea.x, gameArea.y + 120, 320, 'center')
-        love.graphics.printf("(enter) to continue", gameArea.x,
-            gameArea.y + 380, 320, 'center')
+        nState:draw()
         
     elseif state == SCORE then
         sState:draw()
