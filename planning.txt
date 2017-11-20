@@ -1,0 +1,43 @@
+Planning for Space match 3000
+
+
+-- Refactoring --
+
+TODO
+- Game state becomes the parent for GameRunState, GamePauseState, and
+    GameUpdateState. The importance of this is that duplicate code for
+    things that run in all the game states can be put into the GameState
+    class only once and called from the others.
+- All States must take an app argument for their comstructor for passing
+    information between the program and each state. Also it may be necessary
+    to include some methods in the app that can be called from states that
+    need to.
+- Make sure that all the states properly call the parent methods they need to
+    and that they overwrite or add what code they need afterwards. If something
+    is only needed in one place then call it there. if it is needed in more places
+    then call it in a parent. When adding new states think about what they may
+    need to share with other states and try to set their parent appropriatley.
+- Once all states properly take an app argument and call the appropriate parent
+    state methods the main file should include only a call to state:upddate(dt)
+    and state:draw(). The state changing should ahppen in the states by calling
+    app.changeState(newState)
+
+- Add an abstraction for the screen and possibly for areas on the screen. The
+    code for drawing a screen should be like Jpanel in swing. it has a main
+    element that you subclass for each panel of the screen you want to draw on
+    then it has the ability to put multiple panels into a window. My thought
+    would be that since the window is only one and created by love that I could
+    just come up with a main screen that will represent what is contained in that
+    top level space and then split it up with other areas that can represent drawn
+    areas. The main difference is that the screen is not what is being drawn to
+    but simply organizing code for a rendering of the space in the window. This
+    could either be done with creating a screen that can hold muliple screens or
+    with a screen to represent the whole window and a screen area for each part
+    of the screen that can be drawn on. The areas will be able to overlap. If it
+    was java then the screens and areas would all be subclasses that would be
+    able to be used whenever they were needed. This is what I would think to do
+    for the screen but not for indivdual areas. the areas could hold code for
+    drawing specific things to the screen and that way create a little bit of
+    seperation for the drawing code. later if the view were to change the only
+    code that would need to change would be the screen area implementation of
+    its draw functions.
