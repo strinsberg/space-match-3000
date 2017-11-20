@@ -2,6 +2,7 @@ game = require('src/game')
 anims = require('src/animations')
 menu = require('src/menu')
 serial = require('src/serialize')
+AppState = require('src/appState/AppState')
 MainMenuState = require('src/appState/MainMenuState')
 HelpState = require('src/appState/HelpState')
 HighScoreState = require('src/appState/HighScoreState')
@@ -144,6 +145,7 @@ function secToMin (seconds)
 end
 
 -- Declare states before a change state function is introduced
+aState = AppState()
 mmState = MainMenuState()
 hState = HelpState()
 sState = HighScoreState()
@@ -151,6 +153,14 @@ gState = GameState()
 guState = GameUpdateState()
 oState = GameOverState()
 nState = NameEntryState()
+
+-- Prepare to move some of these globals to a main app class
+app = {
+    state = MainMenuState(app),
+    changeState = function(newState)
+        state = newState
+    end
+}
 
 -- Allows for a high score screen
 
@@ -244,9 +254,8 @@ function love.update(dt)
     
     -- Key Presses
     function love.keypressed(key)
-        if key == 'escape' then
-            love.event.quit()
-        end
+
+        aState:keyPressed(key)
         
         if state == MENU then
             mmState:keyPressed(key)
@@ -274,12 +283,9 @@ end
 
 -- All output --------------------------------------------
 function love.draw(dt)
-    
-    love.graphics.draw(background, 0, 0, 0, ratioX, ratioY)
-    love.graphics.setFont(largerFont)
-    love.graphics.printf(gameTitle, 0, 40, 800, 'center', 0, ratioX, ratioY)
-    love.graphics.setFont(font)
-    
+
+    aState:draw()
+
     if state == GAME then
         gState:draw()
         
@@ -287,7 +293,8 @@ function love.draw(dt)
         guState:draw()
     
     elseif state == MENU then
-        mmState:draw()
+    --    mmState:draw()
+        app.state:draw()
         
     elseif state == END then
         oState:draw()

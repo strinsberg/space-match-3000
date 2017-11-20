@@ -3,8 +3,9 @@ AppState = require'src.appState.AppState'
 
 local GameOverState = Class(AppState)
 
-function GameOverState:init()
+function GameOverState:init(app)
     -- Initialize the state
+    AppState:init(self, app)
 end
 
 function GameOverState:update(dt)
@@ -17,6 +18,7 @@ end
 
 function GameOverState:keyPressed(key)
     -- Handle key press events for the state
+    AppState.keyPressed(self, key)
     if key == 'return' then
         -- get all high scores for this mode
         local scores = {}
@@ -37,6 +39,7 @@ end
 
 function GameOverState:draw()
     -- Draw everything for the state to the screen
+    AppState.draw(self)
     love.graphics.printf("Game Over", gameArea.x, gameArea.y, 320, 'center')
     love.graphics.printf(string.format("Final Score: %s", board.score),
             gameArea.x, gameArea.y + 80, 320, 'center')

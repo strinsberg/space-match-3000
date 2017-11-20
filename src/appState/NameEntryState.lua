@@ -3,8 +3,9 @@ AppState = require'src.appState.AppState'
 
 local NameEntryState = Class(AppState)
 
-function NameEntryState:init()
+function NameEntryState:init(app)
     -- Initialize the state
+    AppState.init(self, app)
 end
 
 function NameEntryState:update(dt)
@@ -17,6 +18,7 @@ end
 
 function NameEntryState:keyPressed(key)
     -- Handle key press events for the state
+    AppState.keyPressed(self, key)
     if key == 'backspace' and #gName > 0 then
         gName[#gName] = nil
     elseif key == 'return' then
@@ -43,6 +45,7 @@ end
 
 function NameEntryState:draw()
     -- Draw everything for the state to the screen
+    AppState.draw(self)
     love.graphics.printf("You got a high score!", gameArea.x, gameArea.y, 320, 'center')
     love.graphics.printf("Enter your name", gameArea.x, gameArea.y + 80, 320, 'center')
     love.graphics.printf(table.concat(gName, ""), gameArea.x, gameArea.y + 120, 320, 'center')

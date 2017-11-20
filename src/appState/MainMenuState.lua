@@ -3,8 +3,9 @@ AppState = require'src.appState.AppState'
 
 local MainMenuState = Class(AppState)
 
-function MainMenuState:init()
+function MainMenuState:init(app)
     -- Initialize the state
+    AppState.init(self, app)
 end
 
 function MainMenuState:update(dt)
@@ -17,11 +18,13 @@ end
 
 function MainMenuState:keyPressed(key)
     -- Handle key press events for the state
+    AppState.keyPressed(self, key)
     currentMenu:action(key) -- Relies on a global variable from main.lua
 end
 
 function MainMenuState:draw()
     -- Draw everything for the state to the screen
+    AppState.draw(self)
     love.graphics.printf(currentMenu.title, gameArea.x, gameArea.y, 320, "center")
     love.graphics.printf(string.format("Difficulty: %s", game.diffToString(gameDifficulty)),
             gameArea.x, gameArea.y + 320, 320, 'center')

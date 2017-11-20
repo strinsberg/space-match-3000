@@ -3,8 +3,9 @@ AppState = require'src.appState.AppState'
 
 local HighScoreState = Class(AppState)
 
-function HighScoreState:init()
+function HighScoreState:init(app)
     -- Initialize the state
+    AppState.init(self, app)
 end
 
 function HighScoreState:update(dt)
@@ -17,6 +18,7 @@ end
 
 function HighScoreState:keyPressed(key)
     -- Handle key press events for the state
+    AppState.keyPressed(self, key)
     if key == 'return' then
         state = MENU
     elseif key == 'm' then
@@ -28,6 +30,7 @@ end
 
 function HighScoreState:draw()
     -- Draw everything for the state to the screen
+    AppState.draw(self)
     local diff = game.diffToString(gameDifficulty)
     local mode = game.modeSaveString(gameMode)
     love.graphics.printf(string.format("%s %s High Scores", diff, game.modeToString(gameMode)),

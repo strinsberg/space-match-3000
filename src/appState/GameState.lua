@@ -3,8 +3,9 @@ AppState = require'src.appState.AppState'
 
 local GameState = Class(AppState)
 
-function GameState:init()
+function GameState:init(app)
     -- Initialize the state
+    AppState:init(self, app)
 end
 
 function GameState:update(dt)
@@ -124,6 +125,7 @@ end
 
 function GameState:keyPressed(key)
     -- Handle key press events for the state
+    AppState.keyPressed(self, key)
     if key == "p" then
         mainMenu:addItem('r', "(R)esume Game", resumeGame)
         state = MENU
@@ -144,6 +146,7 @@ end
 function GameState:draw()
     -- Draw everything for the state to the screen
     -- Draw all items
+    AppState.draw(self)
     local row, column
     for row = 1, board.rows do
         for column = 1, board.columns do

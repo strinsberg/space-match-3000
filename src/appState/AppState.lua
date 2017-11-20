@@ -3,8 +3,9 @@ Class = require'src.Class'
 -- Base class/interface for all app state classes
 local AppState = Class()
 
-function AppState:init()
+function AppState:init(app)
     -- Initialize the state
+    self.app = app
 end
 
 function AppState:update(dt)
@@ -17,10 +18,17 @@ end
 
 function AppState:keyPressed(key)
     -- Handle key press events for the state
+    if key == 'escape' then
+        love.event.quit()
+    end
 end
 
 function AppState:draw()
     -- Draw everything for the state to the screen
+    love.graphics.draw(background, 0, 0, 0, ratioX, ratioY)
+    love.graphics.setFont(largerFont)
+    love.graphics.printf(gameTitle, 0, 40, 800, 'center', 0, ratioX, ratioY)
+    love.graphics.setFont(font)
 end
 
 return AppState
