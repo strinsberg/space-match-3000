@@ -1,5 +1,6 @@
 Class = require'src.Class'
 AppState = require'src.appState.AppState'
+MainMenuState = require'src.appState.MainMenuState'
 
 local HighScoreState = Class(AppState)
 
@@ -20,7 +21,7 @@ function HighScoreState:keyPressed(key)
     -- Handle key press events for the state
     AppState.keyPressed(self, key)
     if key == 'return' then
-        state = MENU
+        self.app.changeState(MainMenuState(self.app))
     elseif key == 'm' then
         cycleMode()
     elseif key == 'd' then

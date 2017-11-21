@@ -1,5 +1,6 @@
 Class = require'src.Class'
 AppState = require'src.appState.AppState'
+HighScoreState = require'src.appState.HighScoreState'
 
 local NameEntryState = Class(AppState)
 
@@ -26,7 +27,7 @@ function NameEntryState:keyPressed(key)
         local gmode = game.modeSaveString(gameMode)
         highScores[diff][gmode][#highScores[diff][gmode] + 1] = {mode = gmode,
                 difficulty = diff, name = table.concat(gName, ""), score = board.score}
-        state = SCORE
+        self.app.changeState(HighScoreState(self.app))
         -- sorts the table by score from highest to lowest
         table.sort(highScores[diff][gmode], function(a,b) return a.score>b.score end)
         -- If there are more than 10 scores remove the lowest score

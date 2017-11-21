@@ -1,5 +1,7 @@
 Class = require'src.Class'
 GameState = require'src.appState.GameState'
+GameOverState = require'src.appState.GameOverState'
+GamePauseState = require'src.appState.GamePauseState'
 
 -- Needs to inherit from the gamestate so that it can share those methods.
 -- this way anything that needs to be in both can be. mostly the draw function
@@ -14,8 +16,8 @@ end
 
 function GameUpdateState:update(dt)
     -- All game updates for the state
-    -- Update the animations that are not finished
     GameState.update(self, dt)
+    -- Update the animations that are not finished
     for i, animation in ipairs(blockingAnims) do
         if not animation.finished then
             animation:update(dt)
@@ -32,7 +34,7 @@ function GameUpdateState:update(dt)
         end
     end
     if #blockingAnims == 0 then
-        state = GAME
+        self.app.changeState(GameRunState(self.app))
     end
 end
 
@@ -42,6 +44,11 @@ end
 
 function GameUpdateState:keyPressed(key)
     -- Handle key press events for the state
+    if key == 'p' then
+        self.app.changeState(GamePauseState(self.app))
+    elseif key == 'q' then
+        self.app.changeState(GameOverState(self.app))
+    end
 end
 
 function GameUpdateState:draw()
@@ -49,6 +56,10 @@ function GameUpdateState:draw()
     -- Draw all items
     GameState.draw(self)
     -- All drawing that might be specific to this state can go here
+    love.graphics.printf("(h)int" , gameArea.x, gameArea.y + 380,
+            320, 'left')
+    love.graphics.printf("(p)ause", gameArea.x, gameArea.y + 380,
+            320, 'right')
 end
 
 return GameUpdateState

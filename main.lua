@@ -2,6 +2,7 @@ game = require('src/game')
 anims = require('src/animations')
 menu = require('src/menu')
 serial = require('src/serialize')
+-- States
 AppState = require('src/appState/AppState')
 MainMenuState = require('src/appState/MainMenuState')
 HelpState = require('src/appState/HelpState')
@@ -10,12 +11,22 @@ GameState = require('src/appState/GameState')
 GameUpdateState = require('src/appState/GameUpdateState')
 GameOverState = require('src/appState/GameOverState')
 NameEntryState = require('src/appState/NameEntryState')
+GameRunState = require('src/appState/GameRunState')
+GamePauseState = require('src/appState/GamePauseState')
 
 -- Get new random number set
 math.randomseed( os.time() )
 
 -- !!!! Most of this global logic should be stored somewhere else
 --      so it can easily be passed to other parts of the program like states
+
+app = {
+    state = MainMenuState(app),
+    changeState = function(newState)
+        app.state = newState
+    end
+}
+
 
 -- Other variables
 gameTitle = "Space Match 3000"
@@ -93,16 +104,16 @@ function newGame ()
     board = game.board:new{difficulty = gameDifficulty, mode = gameMode}
     board:set()
     board:setLimits()
-    state = GAME
+    app.changeState(GameRunState(app))
     gameOver = false
 end
 
 function scoreScreen()
-    state = SCORE
+    app.changeState(HighScoreState(app))
 end
 
 function helpScreen()
-    state = HELP
+    app.changeState(HelpState(app))
 end
 
 -- Create some menus
@@ -116,11 +127,6 @@ mainMenu:addItem("q", "(q)uit", love.event.quit)
 
 currentMenu = mainMenu
 
-
--- set state to GAME
-function resumeGame()
-    state = GAME
-end
 
 -- get corrds from row or column
 function columnX (column)
@@ -144,25 +150,6 @@ function secToMin (seconds)
     return t
 end
 
--- Declare states before a change state function is introduced
-aState = AppState()
-mmState = MainMenuState()
-hState = HelpState()
-sState = HighScoreState()
-gState = GameState()
-guState = GameUpdateState()
-oState = GameOverState()
-nState = NameEntryState()
-
--- Prepare to move some of these globals to a main app class
-app = {
-    state = MainMenuState(app),
-    changeState = function(newState)
-        state = newState
-    end
-}
-
--- Allows for a high score screen
 
 --image loading-------------------------------------------
 function love.load(arg)
@@ -205,107 +192,23 @@ function love.update(dt)
         ratioY = h / screenH
     end
     
-    -- Game state specific updates--------------------------------
-    if state == MENU then
-        -- Nothing right now
-        
-    elseif state == UPDATE then
-        guState:update(dt)
-    
-    -- The game is running and no animations are being updated
-    elseif state == GAME then
-        gState:update(dt)
-    
-    -- Any other game state
-    else
-        -- Nothing for now
-    end
-    
-    -- Other state combos
-    if state == GAME or state == UPDATE then
-        if board.timeLimit then -- Update the time taken in the game
-            board.timeTaken = board.timeTaken + dt
-        end
-    end
-    
-    -- Stuff to happen always----------------------
-    -- Update non blocking animations
-    for i, animation in ipairs(animations) do
-        animation:update(dt)
-        if animation.finished then
-            table.remove(animations, i)
-        end
-    end
-
-    -- Update match score animations
-    for i, animation in ipairs(scoreAnims) do
-        animation:update(dt)
-        if animation.finished then
-            table.remove(scoreAnims, i)
-        end
-    end
+    app.state:update(dt)
     
     -- Input events------------------------------------------------
     
     -- Events for clicking the mouse
     function love.mousepressed(x, y, button, istouch)
-        gState:mousePressed(x, y, button)
+        app.state:mousePressed(x, y, button)
     end
     
     -- Key Presses
     function love.keypressed(key)
-
-        aState:keyPressed(key)
-        
-        if state == MENU then
-            mmState:keyPressed(key)
-        
-        elseif state == GAME then
-            gState:keyPressed(key)
-
-        elseif state == END then
-            oState:keyPressed(key)
-        
-        elseif state == NAME then
-            nState:keyPressed(key)
-            
-        elseif state == SCORE then
-            sState:keyPressed(key)
-        
-        elseif state == HELP then
-            hState:keyPressed(key)
-        end
-        
-    
+        app.state:keyPressed(key)
     end
 end
 
 
 -- All output --------------------------------------------
 function love.draw(dt)
-
-    aState:draw()
-
-    if state == GAME then
-        gState:draw()
-        
-    elseif state == UPDATE then
-        guState:draw()
-    
-    elseif state == MENU then
-    --    mmState:draw()
-        app.state:draw()
-        
-    elseif state == END then
-        oState:draw()
-    
-    elseif state == NAME then
-        nState:draw()
-        
-    elseif state == SCORE then
-        sState:draw()
-    
-    elseif state == HELP then
-        hState:draw()
-    end
+    app.state:draw()
 end

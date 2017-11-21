@@ -1,11 +1,13 @@
 Class = require'src.Class'
 AppState = require'src.appState.AppState'
+NameEntryState = require'src.appState.NameEntryState'
+HighScoreState = require'src.appState.HighScoreState'
 
 local GameOverState = Class(AppState)
 
 function GameOverState:init(app)
     -- Initialize the state
-    AppState:init(self, app)
+    AppState.init(self, app)
 end
 
 function GameOverState:update(dt)
@@ -28,12 +30,12 @@ function GameOverState:keyPressed(key)
         for _, score in ipairs(highScores[diff][mode]) do
             if board.score > score.score or
                     (#highScores[diff][mode] < 10 and board.score > 0) then
-                state = NAME
+                self.app.changeState(NameEntryState(self.app))
                 return
             end
         end
         -- if players score is not a high score just go straight to the score screen
-        state = SCORE
+        self.app.changeState(HighScoreState(self.app))
     end
 end
 
