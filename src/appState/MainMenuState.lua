@@ -1,11 +1,21 @@
 Class = require'src.Class'
 AppState = require'src.appState.AppState'
+Screen = require'src.view.Screen'
+MainPanel = require'src.view.panel.MainPanel'
+AppDetailsPanel = require'src.view.panel.AppDetailsPanel'
+VerticalMenuPanel = require'src.view.panel.VerticalMenuPanel'
+GameSettingsPanel = require'src.view.panel.GameSettingsPanel'
 
 local MainMenuState = Class(AppState)
 
 function MainMenuState:init(app)
     -- Initialize the state
     AppState.init(self, app)
+    self.screen = Screen()
+    self.screen:addPanel(MainPanel(app))
+    self.screen:addPanel(AppDetailsPanel(app, 0, 580))
+    self.screen:addPanel(VerticalMenuPanel(app, 240, 160, currentMenu)) -- current menu will need to be created somwhere non global
+    self.screen:addPanel(GameSettingsPanel(app, 400 - 120, 480))
 end
 
 function MainMenuState:update(dt)
@@ -24,18 +34,7 @@ end
 
 function MainMenuState:draw()
     -- Draw everything for the state to the screen
-    AppState.draw(self)
-    love.graphics.printf(currentMenu.title, gameArea.x, gameArea.y, 320, "center")
-    love.graphics.printf(string.format("Difficulty: %s", game.diffToString(gameDifficulty)),
-            gameArea.x, gameArea.y + 320, 320, 'center')
-    love.graphics.printf(string.format("Mode: %s", game.modeToString(gameMode)),
-            gameArea.x, gameArea.y + 350, 320, 'center')
-    for i, item in ipairs(currentMenu.items) do
-        love.graphics.printf(item.text, gameArea.x, gameArea.y + 20 + (i * fontSize),
-                320, "center")
-    end
-    love.graphics.printf(version, 0, gameArea.y2 + 90, 800, 'center')
-    love.graphics.printf(creator, 0, gameArea.y2 + 120, 800, 'center')
+    self.screen:render()
 end
 
 return MainMenuState

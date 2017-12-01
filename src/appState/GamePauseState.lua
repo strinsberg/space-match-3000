@@ -1,11 +1,14 @@
 Class = require'src.Class'
 GameState = require'src.appState.GameState'
 GameOverState = require'src.appState.GameOverState'
+MessagePanel = require'src.view.panel.MessagePanel'
 
 local GamePauseState = Class(GameState)
 
 function GamePauseState:init(app)
     GameState.init(self, app)
+    self.screen:addPanel(MessagePanel(app, 0, 120, "Game Paused", app.screenW))
+    self.screen:addPanel(MessagePanel(app, 200, 500, "(p) or (enter) to resume", 400))
 end
 
 function GamePauseState:update(dt)
@@ -26,10 +29,6 @@ end
 
 function GamePauseState:draw()
     GameState.draw(self)
-    love.graphics.printf("Game Paused", gameArea.x, gameArea.y - 40,
-            320, 'center')
-    love.graphics.printf("(p) or (enter) to resume", gameArea.x - 40,
-            gameArea.y + 340, 400, 'center')
 end
 
 return GamePauseState

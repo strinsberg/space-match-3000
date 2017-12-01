@@ -20,18 +20,7 @@ math.randomseed( os.time() )
 -- !!!! Most of this global logic should be stored somewhere else
 --      so it can easily be passed to other parts of the program like states
 
-app = {
-    state = MainMenuState(app),
-    changeState = function(newState)
-        app.state = newState
-    end
-}
-
-
 -- Other variables
-gameTitle = "Space Match 3000"
-version = "v2.0"
-creator = "Plimpton Productions 2017"
 rowClick = 0
 columnClick = 0
 switchBack = false
@@ -94,7 +83,6 @@ HELP = 7
 state = MENU
 
 -- Tables to hold animations
-animations = {} -- Non blocking animations
 blockingAnims = {} -- Animations that block all action
 scoreAnims = {} -- Animations for scores of individual matches
 
@@ -130,11 +118,11 @@ currentMenu = mainMenu
 
 -- get corrds from row or column
 function columnX (column)
-    return ((column - 1) * itemSize) + gameArea.x
+    return ((column - 1) * itemSize)
 end
 
 function rowY (row)
-    return ((row - 1) * itemSize) + gameArea.y
+    return ((row - 1) * itemSize)
 end
 
 -- display seconds as minute:seconds
@@ -149,6 +137,27 @@ function secToMin (seconds)
     end
     return t
 end
+
+function timeLeft()
+    return secToMin(board.timeLimit - board.timeTaken)
+end
+
+function movesMade()
+    return board.movesTaken
+end
+
+app = {
+    state = nil,
+    changeState = function(newState)
+        app.state = newState
+    end,
+    screenW = 800,
+    screenH = 640,
+    gameTitle = "Space Match 3000",
+    version = "v2.5",
+    company = "Plimpton Productions 2017"
+}
+app.state = MainMenuState(app)
 
 
 --image loading-------------------------------------------

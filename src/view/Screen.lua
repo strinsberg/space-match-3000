@@ -1,25 +1,22 @@
-Class = require'src.class'
+Class = require'src.Class'
 
--- Base Class/Interface for screens that hold information for drawing an appState
+-- Object to hold all the panels that may be needed on a screen
 local Screen = Class()
 
-function Screen:init(state)
+function Screen:init()
     -- Initialization code
-    self.state = state
+    self.panels = {}
 end
 
-function Screen:resize(oldWidth, oldHeight, width, height)
-    -- Handle resize events?
-    -- could just check the percentage difference from the old to the new and use it to multiply
-    -- any values in the code in order to get a better number. so if the screen is 100 and it doubles
-    -- then all the values could just double. so
-    -- love.graphics.draw(image, x * screenRatioX, y * screenRatioY, imageSizeX * screenRatiox, imageSizeY * screenRatioY)
-    -- screen ratio could be set in the app somwhere and that is all that would have to be changed with
-    -- resize events
+function Screen:addPanel(panel)
+    self.panels[#self.panels + 1] = panel
 end
 
-function Screen:draw()
+function Screen:render()
     -- Draw everything to the screen
+    for i, panel in ipairs(self.panels) do
+        panel:render()
+    end
 end
 
 return Screen

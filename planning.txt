@@ -23,3 +23,5 @@ TODO
     seperation for the drawing code. later if the view were to change the only
     code that would need to change would be the screen area implementation of
     its draw functions.
+- Only do requires in one place for all the GameStates. Maybe in the parent.
+    since some of them switch between eachother it creates a loop in the requires.

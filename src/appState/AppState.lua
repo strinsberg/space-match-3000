@@ -25,9 +25,9 @@ end
 
 function AppState:draw()
     -- Draw everything for the state to the screen
-    love.graphics.draw(background, 0, 0, 0, ratioX, ratioY)
+    love.graphics.draw(background, 0, 0)
     love.graphics.setFont(largerFont)
-    love.graphics.printf(gameTitle, 0, 40, 800, 'center', 0, ratioX, ratioY)
+    love.graphics.printf(self.app.gameTitle, 0, 40, 800, 'center')
     love.graphics.setFont(font)
 end
 
