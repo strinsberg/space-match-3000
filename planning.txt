@@ -4,6 +4,24 @@ Planning for Space match 3000
 -- Refactoring --
 
 TODO
+- Game state becomes the parent for GameRunState, GamePauseState, and
+    GameUpdateState. The importance of this is that duplicate code for
+    things that run in all the game states can be put into the GameState
+    class only once and called from the others.
+- All States must take an app argument for their comstructor for passing
+    information between the program and each state. Also it may be necessary
+    to include some methods in the app that can be called from states that
+    need to.
+- Make sure that all the states properly call the parent methods they need to
+    and that they overwrite or add what code they need afterwards. If something
+    is only needed in one place then call it there. if it is needed in more places
+    then call it in a parent. When adding new states think about what they may
+    need to share with other states and try to set their parent appropriatley.
+- Once all states properly take an app argument and call the appropriate parent
+    state methods the main file should include only a call to state:upddate(dt)
+    and state:draw(). The state changing should ahppen in the states by calling
+    app.changeState(newState)
+
 - Add an abstraction for the screen and possibly for areas on the screen. The
     code for drawing a screen should be like Jpanel in swing. it has a main
     element that you subclass for each panel of the screen you want to draw on

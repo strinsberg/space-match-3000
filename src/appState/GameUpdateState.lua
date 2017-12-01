@@ -1,6 +1,7 @@
 Class = require'src.Class'
 GameState = require'src.appState.GameState'
 GameOverState = require'src.appState.GameOverState'
+GamePauseState = require'src.appState.GamePauseState'
 
 -- Needs to inherit from the gamestate so that it can share those methods.
 -- this way anything that needs to be in both can be. mostly the draw function

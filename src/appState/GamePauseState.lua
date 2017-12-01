@@ -21,7 +21,7 @@ end
 
 function GamePauseState:keyPressed(key)
     if key == 'p' or key == 'return' then
-        self.app.changeState(GameUpdateState(self.app))
+        self.app.changeState(GameRunState(self.app))
     elseif key == 'q' then
         self.app.changeState(GameOverState(self.app))
     end
