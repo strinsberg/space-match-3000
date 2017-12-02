@@ -9,12 +9,12 @@ local fontFile = "assets/YandereFont.ttf"
 
 -- The files for the game images
 local imageFiles = {
-    blue = "assets/blue.png",
-    green = "assets/green.png",
-    purple = "assets/purple.png",
-    red = "assets/red.png",
-    yellow = "assets/yellow.png",
-    silver = "assets/silver.png",
+    blueBlock = "assets/blue.png",
+    greenBlock = "assets/green.png",
+    purpleBlock = "assets/purple.png",
+    redBlock = "assets/red.png",
+    yellowBlock = "assets/yellow.png",
+    silverBlock = "assets/silver.png",
     background = "assets/background.png",
     selection = "assets/selection.png",
     hint = "assets/hint.png"
@@ -28,7 +28,7 @@ function assets.load()
     end
     
     -- Load the image size from one of the item images
-    assets.itemSize = assets.blue:getWidth()
+    assets.blockSize = assets.blueBlock:getWidth()
     
     -- Load a normal and large font
     assets.font = love.graphics.newFont(fontFile, assets.fontSize)
