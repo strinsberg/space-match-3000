@@ -56,5 +56,11 @@ function assets.getBlockImage(color)
     end
 end
 
+
+-- Convert row or colum to an x or y value based on Block size
+function assets.toPixel(index)
+    return (index - 1) * assets.blockSize
+end
+
 -- Return the assets object
 return assets

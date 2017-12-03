@@ -1,4 +1,6 @@
 Class = require'src.Class'
+assets = require'assets.assets'
+ScreenArea = require'src.view.ScreenArea'
 
 -- Base class/interface for all app state classes
 local AppState = Class()
@@ -6,6 +8,7 @@ local AppState = Class()
 function AppState:init(app)
     -- Initialize the state
     self.app = app
+    self.mainArea = ScreenArea(0, 0, app.width)
 end
 
 function AppState:update(dt)
@@ -25,10 +28,10 @@ end
 
 function AppState:draw()
     -- Draw everything for the state to the screen
-    love.graphics.draw(background, 0, 0)
-    love.graphics.setFont(largerFont)
-    love.graphics.printf(self.app.gameTitle, 0, 40, 800, 'center')
-    love.graphics.setFont(font)
+    self.mainArea:draw(assets.background, 0, 0)
+    love.graphics.setFont(assets.largerFont)
+    self.mainArea:printCenter(self.app.title, 40)
+    love.graphics.setFont(assets.font)
 end
 
 return AppState

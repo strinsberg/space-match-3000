@@ -30,9 +30,18 @@ function functions.printArray(array)
     print(items)
 end
 
--- Convert row column value to an x or y value
-function functions.ToPix(rowcolumn, size)
-    return (rowcolumn - 1) * size
+
+-- Convert seconds as minute:seconds
+function secToMin (seconds)
+    local t = nil
+    local sec = math.floor(seconds % 60)
+    local minutes = math.floor(seconds / 60)
+    if sec < 10 then
+        t = string.format("%s:0%s", minutes, sec)
+    else
+        t = string.format("%s:%s", minutes, sec)
+    end
+    return t
 end
 
 return functions
