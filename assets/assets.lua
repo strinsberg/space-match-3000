@@ -35,5 +35,26 @@ function assets.load()
     assets.largerFont = love.graphics.newFont(fontFile, assets.largerFontSize)
 end
 
+
+-- Get the image based on a block color
+-- Add local color constants instead of hardcoded numbers
+function assets.getBlockImage(color)
+    if color == 1 then
+        return assets.blueBlock
+    elseif color == 2 then
+        return assets.greenBlock
+    elseif color == 3 then
+        return assets.yellowBlock
+    elseif color == 4 then
+        return assets.redBlock
+    elseif color == 5 then
+        return assets.purpleBlock
+    elseif color == 6 then
+        return assets.silverBlock
+    else
+        return assets.redBlock -- change to the last color
+    end
+end
+
 -- Return the assets object
 return assets
