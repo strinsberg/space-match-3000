@@ -9,11 +9,13 @@ function Block:init(numColors, row, column)
     self.column = column
     -- Mostly for moving blocks
     self.isVisible = true -- Wether or not the block can be seen
-    self.newRow = nil -- The row a block is moving to
-    self.newColumn = nil -- The column a block is moving to
+    self.moveRow = nil -- The row a block is moving to
+    self.moveColumn = nil -- The column a block is moving to
 end
 
 function Block:move(newRow, newColumn)
+    self.moveRow = self.row
+    self.moveColumn = self.column
     self.row = newRow
     self.column = newColumn
 end

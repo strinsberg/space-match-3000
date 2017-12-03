@@ -23,6 +23,8 @@ function Game:init(difficulty, mode)
     self.score = 0
     self.scoreModifier = 1
     self.selection = nil
+    self.isOver = false
+    self.refill = true -- Move to mode when it is ready
 end
 
 
@@ -48,7 +50,13 @@ end
 
 -- Set the seleced block
 function Game:setSelection(row, column)
-    self.selection = {row = row, column = column}
+    -- If no arguments are given set selection to nil
+    if not row or not column then
+        self.selection = nil
+    else
+        -- Else set it to the row column
+        self.selection = {row = row, column = column}
+    end
 end
 
 return Game

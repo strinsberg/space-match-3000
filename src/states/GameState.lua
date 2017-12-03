@@ -20,14 +20,6 @@ end
 function GameState:mousePressed(x, y, button)
     -- Handle mouse events for the state
     AppState.mousePressed(self, x, y, button)
-    -- Eventually move to the GameRun state as it should be the only place to use
-    -- the mouse
-    row = math.floor((y - 160) / assets.blockSize) + 1
-    column = math.floor((x - 240) / assets.blockSize) + 1
-    if button == 1 then
-        self.app.game:setSelection(row, column)
-    end
-    
 end
 
 function GameState:keyPressed(key)

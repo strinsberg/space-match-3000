@@ -101,7 +101,7 @@ function Match3Board:isBlockMatchedRow(row, column)
 end
 
 
--- Switch one bock with another
+-- Switch one bock with another returns the blocks switched
 function Match3Board:switchBlocks(row, column, otherRow, otherColumn)
     local block = self.board[row][column]
     local otherBlock = self.board[otherRow][otherColumn]
@@ -109,6 +109,7 @@ function Match3Board:switchBlocks(row, column, otherRow, otherColumn)
     otherBlock:move(row, column)
     self.board[row][column] = otherBlock
     self.board[otherRow][otherColumn] = block
+    return block, otherBlock
 end
 
 
@@ -272,7 +273,7 @@ function Match3Board:getDroppingBlocksColumn(column, refill)
             numEmpty = numEmpty + 1 -- Increment total empty spaces
         -- If the space has a block and empty spaces have been found
         elseif block ~= 0 and numEmpty > 0 then
-            block.newRow = emptyStart -- Row the block is going to move to
+            block.moveRow = emptyStart -- Row the block is going to move to
             -- Add block to tho list of blocks that will dropp
             droppingBlocks[#droppingBlocks + 1] = block
             emptyStart = emptyStart - 1
@@ -286,7 +287,7 @@ function Match3Board:getDroppingBlocksColumn(column, refill)
         for i = numEmpty, 1, -1 do
             -- Add a new block to drop above the top of the board
             local block = Block(self.numColors, i - numEmpty, column)
-            block.newRow = i
+            block.moveRow = i
             droppingBlocks[#droppingBlocks + 1] = block
         end
     else
@@ -302,9 +303,9 @@ end
 -- Move all blocks that need to drop into their new spaces
 function Match3Board:dropBlocks(droppingBlocks)
     for i, block in ipairs(droppingBlocks) do
-        self.board[block.newRow][block.column] = block
-        block:move(block.newRow, block.column)
-        block.visible = false
+        self.board[block.moveRow][block.column] = block
+        block:move(block.moveRow, block.column)
+        block.isVisible = false
     end
 end
 
