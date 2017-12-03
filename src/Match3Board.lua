@@ -296,6 +296,7 @@ function Match3Board:getDroppingBlocksColumn(column, refill)
             self.board[i][column] = 0
         end
     end
+    -- testing
     return droppingBlocks
 end
 

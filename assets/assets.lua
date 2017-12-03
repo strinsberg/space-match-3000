@@ -62,5 +62,10 @@ function assets.toPixel(index)
     return (index - 1) * assets.blockSize
 end
 
+-- Convert x or y to row or column index based on block size
+function assets.toIndex(pixel)
+    return math.floor(pixel / assets.blockSize) + 1
+end
+
 -- Return the assets object
 return assets

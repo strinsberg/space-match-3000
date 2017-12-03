@@ -1,6 +1,7 @@
 Class = require'src.Class'
 Game = require'src.Game'
 GameRunState = require'src.states.GameRunState'
+GameUpdateState = require'src.states.GameUpdateState'
 
 local App = Class()
 

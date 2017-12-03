@@ -3,16 +3,15 @@ assets = require'assets.assets'
 App = require'src.App'
 Area = require'src.view.ScreenArea'
 
+-- Get new random number set
+math.randomseed( os.time() )
+
 -- Create app
 app = App()
 gArea = Area(240, 160, 320)
 
 -- Load all game assets
 function love.load()
-    
-    -- Get new random number set
-    math.randomseed( os.time() )
-    
     -- Load assets and set font
     assets.load()
     love.graphics.setFont(assets.font)
