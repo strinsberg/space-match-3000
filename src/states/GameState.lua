@@ -12,6 +12,7 @@ function GameState:init(app)
     self.boardArea = ScreenArea(240, 160, 320)
     self.scoreArea = ScreenArea(560, 160, 240)
     self.settingsArea = ScreenArea(0, 160, 240)
+    self.menuArea = ScreenArea(120, 500, 560)
     self.game = app.game
     self.board = self.game.board
 end
@@ -49,6 +50,8 @@ function GameState:keyPressed(key)
     
     if key == 'q' then
         self.app:changeState(MainMenuState(self.app))
+    elseif key == 'p' then
+        self.app:changeState(GamePauseState(self.app))
     end
 end
 
@@ -90,6 +93,9 @@ function GameState:draw()
         self.settingsArea:printCenter(self.game.mode:limitLeftToString(),
                 assets.blockSize * 2)
     end
+    
+    -- draw menu like options
+    self.menuArea:printCenter("(p)ause  (h)int  (q)uit", assets.blockSize)
 end
 
 

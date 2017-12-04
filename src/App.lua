@@ -1,5 +1,7 @@
 Class = require'src.Class'
 Game = require'src.Game'
+GameState = require'src.states.GameState'
+GamePauseState = require'src.states.GamePauseState'
 GameRunState = require'src.states.GameRunState'
 GameUpdateState = require'src.states.GameUpdateState'
 MainMenuState = require'src.states.MainMenuState'

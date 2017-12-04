@@ -3,7 +3,7 @@ functions = require'src.libFunctions'
 
 local Mode = Class()
 
--- Mode Constants
+-- Mode Constants and local variables
 Mode.types = {
     UNLIMITED = 1,
     MOVES = 2,
