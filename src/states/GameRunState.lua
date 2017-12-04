@@ -22,7 +22,7 @@ function GameRunState:update(dt)
     
     -- Check for game over
     if self.game.isOver then
-        love.event.quit()
+        self.app:changeState(MainMenuState(self.app))
     end
     
     -- Get all matches on the board and set state to update to animate them
@@ -98,7 +98,7 @@ function GameRunState:mousePressed(x, y, button)
                 self.game.selection.column) then
             updateBoard = true
             -- Update move limit if needed
-            if self.game.mode.gameType == Mode.MOVES then
+            if self.game.mode.gameType == Mode.types.MOVES then
                 self.game.mode:updateLimit(1)
             end
         else

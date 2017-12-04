@@ -4,13 +4,21 @@ functions = require'src.libFunctions'
 local Mode = Class()
 
 -- Mode Constants
-Mode.UNLIMITED = 1
-Mode.MOVES = 2
-Mode.TIMED = 3
-Mode.EASY = 4
-Mode.NORMAL = 5
-Mode.HARD = 6
+Mode.types = {
+    UNLIMITED = 1,
+    MOVES = 2,
+    TIMED = 3
+}
 
+Mode.diff = {
+    EASY = 4,
+    NORMAL = 5,
+    HARD = 6
+}
+
+local moveLimits = {25, 50, 75, 100}
+local timeLimits = {30, 60, 120, 180, 300}
+local typeIndex = 1
 
 function Mode:init(gameType, difficulty, limit, refill)
     self.gameType = gameType
@@ -37,40 +45,85 @@ function Mode:limitIsReached()
     end
 end
 
+
+function Mode:changeDifficulty()
+    if self.difficulty == Mode.diff.HARD then
+        self.difficulty = Mode.diff.EASY
+    else
+        self.difficulty = self.difficulty + 1
+    end
+end
+
+function Mode:changeGameType()
+    if self.gameType == Mode.types.TIMED then
+        if typeIndex == #timeLimits then
+            self.gameType = Mode.types.MOVES
+            typeIndex = 1
+            self.limit = moveLimits[typeIndex]
+            self.limitLeft = self.limit
+        else
+            typeIndex = typeIndex + 1
+            self.limit = timeLimits[typeIndex]
+            self.limitLeft = self.limit
+        end
+    elseif self.gameType == Mode.types.MOVES then
+        if typeIndex == #moveLimits then
+            self.gameType = Mode.types.UNLIMITED
+            typeIndex = 1
+            self.limit = nil
+            self.limitLeft = self.limit
+        else
+            typeIndex = typeIndex + 1
+            self.limit = moveLimits[typeIndex]
+            self.limitLeft = self.limit
+        end
+    else
+        self.gameType = Mode.types.TIMED
+        typeIndex = 1
+        self.limit = timeLimits[typeIndex]
+        self.limitLeft = self.limit
+    end
+end
+
+
 function Mode:typeToString()
     local label = "Mode:"
-    if self.gameType == Mode.UNLIMITED then
+    if self.gameType == Mode.types.UNLIMITED then
         return string.format("%s Endless", label)
-    elseif self.gameType == Mode.MOVES then
+    elseif self.gameType == Mode.types.MOVES then
         return string.format("%s Moves", label, self.limit)
-    elseif self.gameType == Mode.TIMED then
+    elseif self.gameType == Mode.types.TIMED then
         return string.format("%s Timed", label)
-    else
-        return "Should be unreachable"
     end
 end
 
 function Mode:diffToString()
     local label = "Difficulty:"
-    if self.difficulty == Mode.EASY then
+    if self.difficulty == Mode.diff.EASY then
         return string.format("%s Easy", label)
-    elseif self.difficulty == Mode.NORMAL then
+    elseif self.difficulty == Mode.diff.NORMAL then
         return string.format("%s Normal", label)
-    elseif self.difficulty == Mode.HARD then
+    elseif self.difficulty == Mode.diff.HARD then
         return string.format("%s Hard", label)
-    else
-        return "Should be unreachable"
     end
 end
 
 function Mode:limitToString()
-    if self.gameType == Mode.MOVES then
+    if self.gameType == Mode.types.MOVES then
+        return string.format("%s",self.limit)
+    elseif self.gameType == Mode.types.TIMED then
+        return string.format("%s", functions.secToMin(self.limit))
+    else
+        return ""
+    end
+end
+
+function Mode:limitLeftToString()
+    if self.gameType == Mode.types.MOVES then
         return string.format("Moves Left: %s", self.limitLeft)
-    elseif self.gameType == Mode.TIMED then
+    elseif self.gameType == Mode.types.TIMED then
         return string.format("Time Left: %s",
                 functions.secToMin(self.limitLeft))
-    else
-        return "Should be unreachable"
     end
 end
 

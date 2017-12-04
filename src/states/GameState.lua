@@ -33,7 +33,7 @@ function GameState:update(dt)
     end
     
     -- Update the time if needed
-    if self.game.mode.gameType == Mode.TIMED then
+    if self.game.mode.gameType == Mode.types.TIMED then
         self.game.mode:updateLimit(dt)
     end
 end
@@ -46,6 +46,10 @@ end
 function GameState:keyPressed(key)
     -- Handle key press events for the state
     AppState.keyPressed(self, key)
+    
+    if key == 'q' then
+        self.app:changeState(MainMenuState(self.app))
+    end
 end
 
 
@@ -83,7 +87,7 @@ function GameState:draw()
     self.settingsArea:printCenter(self.game.mode:typeToString(),
             assets.blockSize)
     if self.game.mode.limit then
-        self.settingsArea:printCenter(self.game.mode:limitToString(),
+        self.settingsArea:printCenter(self.game.mode:limitLeftToString(),
                 assets.blockSize * 2)
     end
 end
