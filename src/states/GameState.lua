@@ -10,11 +10,32 @@ local GameState = Class(AppState)
 function GameState:init(app)
     AppState.init(self, app)
     self.boardArea = ScreenArea(240, 160, 320)
+    self.scoreArea = ScreenArea(560, 160, 240)
+    self.settingsArea = ScreenArea(0, 160, 240)
+    self.game = app.game
+    self.board = self.game.board
 end
 
 function GameState:update(dt)
     -- All game updates for the state
     AppState.update(self, dt)
+    
+    -- Update the matchScores duration
+    for i, score in pairs(self.game.matchScores) do
+        score.duration = score.duration - dt
+    end
+    
+    -- Remove matchScores with ended durations
+    for i, score in pairs(self.game.matchScores) do
+        if score.duration < 0 then
+            table.remove(self.game.matchScores, i)
+        end
+    end
+    
+    -- Update the time if needed
+    if self.game.mode.gameType == Mode.TIMED then
+        self.game.mode:updateLimit(dt)
+    end
 end
 
 function GameState:mousePressed(x, y, button)
@@ -46,6 +67,24 @@ function GameState:draw()
         self.boardArea:draw(assets.selection,
             assets.toPixel(self.app.game.selection.column),
             assets.toPixel(self.app.game.selection.row))
+    end
+    
+    -- Draw all the score stuff
+    self.scoreArea:printCenter(string.format("Score: %s", self.game.score), 0)
+    self.scoreArea:printCenter(string.format("Modifier: %s",
+            self.game.scoreModifier), assets.blockSize)
+    self.scoreArea:printCenter("Match Scores", assets.blockSize * 2)
+    for i, score in ipairs(self.game.matchScores) do
+        self.scoreArea:printCenter(score.score, (i + 2) * assets.blockSize)
+    end
+    
+    -- Draw all the settings stuff
+    self.settingsArea:printCenter(self.game.mode:diffToString(), 0)
+    self.settingsArea:printCenter(self.game.mode:typeToString(),
+            assets.blockSize)
+    if self.game.mode.limit then
+        self.settingsArea:printCenter(self.game.mode:limitToString(),
+                assets.blockSize * 2)
     end
 end
 

@@ -16,19 +16,24 @@ function GameUpdateState:update(dt)
     -- Super update
     GameState.update(self, dt)
     
+    -- Update animations
     for i, animation in ipairs(self.animations) do
         if not animation.finished then
             animation:update(dt)
         end
     end
     
+    -- If an animation is finished remove it from the list
     for i, animation in ipairs(self.animations) do
         if animation.finished then
             table.remove(self.animations, i)
-            self.app.game.board.board[assets.toIndex(animation.y)][assets.toIndex(animation.x)].isVisible = true
+            -- Make the block at this position visible again
+            self.board.board[assets.toIndex(animation.y)]
+                    [assets.toIndex(animation.x)].isVisible = true
         end
     end
     
+    -- If there are no more animations gor back to the normal game run state
     if #self.animations == 0 then
         self.app:changeState(GameRunState(self.app))
     end

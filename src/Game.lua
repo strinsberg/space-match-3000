@@ -8,19 +8,13 @@ local Game = Class()
 -- Default board size
 Game.ROWS = 8
 Game.COLUMNS = 8
--- Number of colors for each difficulty
-Game.EASY = 4
-Game.NORMAL = 5
-Game.HARD = 6
-Game.ROUGH = 7
-
 
 -- Create a game with a new board
-function Game:init(difficulty, mode)
-    self.difficulty = difficulty
+function Game:init(mode)
     self.mode = mode
-    self.board = Match3Board(Game.ROWS, Game.COLUMNS, difficulty)
+    self.board = Match3Board(Game.ROWS, Game.COLUMNS, mode.difficulty)
     self.score = 0
+    self.matchScores = {}
     self.scoreModifier = 1
     self.selection = nil
     self.isOver = false
@@ -40,11 +34,13 @@ end
 function Game:scoreMatch(size)
     local score = 0
     if size < 6 then
-        score = size * (((size % 3) * 0.5) * 1)
+        score = size * (((size % 3) * 0.5) + 1)
     else
         score = size * 2.5
     end
-    return score * self.modifier
+    score = score * self.scoreModifier
+    self.matchScores[#self.matchScores + 1] = {score = score, duration = 1}
+    self.score = self.score + score
 end
 
 

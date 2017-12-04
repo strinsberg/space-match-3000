@@ -32,7 +32,7 @@ end
 
 
 -- Convert seconds as minute:seconds
-function secToMin (seconds)
+function functions.secToMin (seconds)
     local t = nil
     local sec = math.floor(seconds % 60)
     local minutes = math.floor(seconds / 60)

@@ -1,6 +1,7 @@
 Class = require'src.Class'
 GameState = require'src.states.GameState'
 ScreenArea = require'src.view.ScreenArea'
+Mode = require'src.Mode'
 assets = require 'assets.assets'
 
 -- The state when the game is running and the player can interact with it
@@ -13,27 +14,34 @@ local switchBack = nil
 
 function GameRunState:init(app)
     GameState.init(self, app)
-    self.game = app.game
-    self.board = self.game.board
 end
 
 function GameRunState:update(dt)
     -- All game updates for the state
     GameState.update(self, dt)
     
+    -- Check for game over
+    if self.game.isOver then
+        love.event.quit()
+    end
+    
     -- Get all matches on the board and set state to update to animate them
     if updateBoard then
         local matches = self.board:getMatches()
         if #matches > 0 then
+            -- score all matches
+            self.game:scoreMatches(matches)
+            self.game.scoreModifier = self.game.scoreModifier + 1
+            -- Remove all the matches
             self.board:removeMatches(matches)
             local droppingBlocks =
                     self.board:getDroppingBlocks(self.game.refill)
             self.board:dropBlocks(droppingBlocks)
             -- set update state with all blocks that need to be updated
             self.app:changeState(GameUpdateState(self.app, droppingBlocks))
-            -- score all matches
         else
             updateBoard = false
+            self.game.scoreModifier = 1
         end
     end
     
@@ -47,6 +55,10 @@ function GameRunState:update(dt)
         block1.isVisible = false
         block2.isVisible = false
         switchBack = nil
+    end
+    
+    if self.game.mode:limitIsReached() then
+        self.game.isOver = true
     end
 end
 
@@ -85,6 +97,10 @@ function GameRunState:mousePressed(x, y, button)
                 or self.board:isBlockMatched(self.game.selection.row,
                 self.game.selection.column) then
             updateBoard = true
+            -- Update move limit if needed
+            if self.game.mode.gameType == Mode.MOVES then
+                self.game.mode:updateLimit(1)
+            end
         else
             -- Set the blocks to be switched back
             switchBack = {block1, block2}
