@@ -5,8 +5,9 @@ assets = require 'assets.assets'
 
 local GamePauseState = Class(GameState)
 
-function GamePauseState:init(app)
+function GamePauseState:init(app, state)
     GameState.init(self, app)
+    self.lastState = state
 end
 
 function GamePauseState:update(dt)
@@ -21,17 +22,20 @@ function GamePauseState:keyPressed(key)
     -- Handle key press events for the state
     if key == 'q' then
         self.app:changeState(MainMenuState(self.app))
-    elseif key == 'p' then
-        self.app:changeState(GameRunState(self.app))
+    elseif key == 'r' then
+        -- Go back to update state. If board is not updating it will go to run
+        self.app:changeState(self.lastState)
     end
 end
 
 
 -- Draw everything for the state to the screen
 function GamePauseState:draw()
-    -- Super draw
-    GameState.draw(self)
-    self.boardArea:printCenter("-- Game Paused --", -assets.blockSize)
+    -- Draw whatever the previous state is
+    self.lastState:draw()
+    self.boardArea:printCenter("-- Game Paused --", -assets.blockSize * 1.5)
+    -- draw menu like options
+    self.menuArea:printCenter("(r)esume", 0)
 end
 
 return GamePauseState

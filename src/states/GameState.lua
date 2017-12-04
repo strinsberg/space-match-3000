@@ -51,7 +51,7 @@ function GameState:keyPressed(key)
     if key == 'q' then
         self.app:changeState(MainMenuState(self.app))
     elseif key == 'p' then
-        self.app:changeState(GamePauseState(self.app))
+        self.app:changeState(GamePauseState(self.app, self))
     end
 end
 
@@ -95,7 +95,8 @@ function GameState:draw()
     end
     
     -- draw menu like options
-    self.menuArea:printCenter("(p)ause  (h)int  (q)uit", assets.blockSize)
+    self.menuArea:printCenter("(p)ause  (h)int  (q)uit",
+            assets.blockSize * 1.5)
 end
 
 
