@@ -3,6 +3,10 @@ assets = require'assets.assets'
 App = require'src.App'
 Area = require'src.view.ScreenArea'
 
+-- I think I might want to do all the imports in the main file and no where else.
+-- It gets a bit messy and because the imports in lua actually run the file it
+-- is problematic with state classes looping
+
 -- Get new random number set
 math.randomseed( os.time() )
 

@@ -15,6 +15,8 @@ local imageFiles = {
     redBlock = "assets/red.png",
     yellowBlock = "assets/yellow.png",
     silverBlock = "assets/silver.png",
+    orangeBlock = "assets/orange.png",
+    pinkBlock = "assets/pink.png",
     background = "assets/background.png",
     selection = "assets/selection.png",
     hint = "assets/hint.png"
@@ -50,9 +52,9 @@ function assets.getBlockImage(color)
     elseif color == 5 then
         return assets.purpleBlock
     elseif color == 6 then
-        return assets.silverBlock
+        return assets.pinkBlock
     else
-        return assets.redBlock -- change to the last color
+        return assets.silverBlock -- change to the last color
     end
 end
 

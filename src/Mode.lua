@@ -13,7 +13,8 @@ Mode.types = {
 Mode.diff = {
     EASY = 4,
     NORMAL = 5,
-    HARD = 6
+    HARD = 6,
+    ROUGH = 7
 }
 
 local moveLimits = {25, 50, 75, 100}
@@ -47,7 +48,7 @@ end
 
 
 function Mode:changeDifficulty()
-    if self.difficulty == Mode.diff.HARD then
+    if self.difficulty == Mode.diff.ROUGH then
         self.difficulty = Mode.diff.EASY
     else
         self.difficulty = self.difficulty + 1
@@ -105,6 +106,8 @@ function Mode:diffToString()
         return string.format("%s Normal", label)
     elseif self.difficulty == Mode.diff.HARD then
         return string.format("%s Hard", label)
+    else
+        return string.format("%s Rough", label)
     end
 end
 

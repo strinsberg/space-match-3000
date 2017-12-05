@@ -17,6 +17,7 @@ function Game:init(mode)
     self.matchScores = {}
     self.scoreModifier = 1
     self.selection = nil
+    self.hint = nil
     self.isOver = false
     self.refill = true -- Move to mode when it is ready
 end
@@ -52,6 +53,18 @@ function Game:setSelection(row, column)
     else
         -- Else set it to the row column
         self.selection = {row = row, column = column}
+    end
+end
+
+
+-- set hint block
+function Game:setHint(row, column)
+    -- If no arguments are given set selection to nil
+    if not row or not column then
+        self.hint = nil
+    else
+        -- Else set it to the row column
+        self.hint = {row = row, column = column}
     end
 end
 

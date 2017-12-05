@@ -15,7 +15,7 @@ function App:init()
     self.game = nil
     self.state =  MainMenuState(self)
     self.title = "Space Match 3000"
-    self.version = 3.0
+    self.version = "3.0"
     self.company = "Plimpton Productions"
     self.currentMode = Mode(Mode.types.UNLIMITED, Mode.diff.EASY, nil, true)
 end

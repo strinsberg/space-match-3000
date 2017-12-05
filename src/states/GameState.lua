@@ -7,6 +7,8 @@ assets = require 'assets.assets'
 -- It will include all code that must run during any point in the game
 local GameState = Class(AppState)
 
+
+-- Constructor for the state
 function GameState:init(app)
     AppState.init(self, app)
     self.boardArea = ScreenArea(240, 160, 320)
@@ -17,8 +19,10 @@ function GameState:init(app)
     self.board = self.game.board
 end
 
+
+-- Perfome all updates for the state
 function GameState:update(dt)
-    -- All game updates for the state
+    -- Super update
     AppState.update(self, dt)
     
     -- Update the matchScores duration
@@ -39,13 +43,15 @@ function GameState:update(dt)
     end
 end
 
+
+-- Handle all mouse presses for the state
 function GameState:mousePressed(x, y, button)
-    -- Handle mouse events for the state
     AppState.mousePressed(self, x, y, button)
 end
 
+
+-- Handle all key presses for the state
 function GameState:keyPressed(key)
-    -- Handle key press events for the state
     AppState.keyPressed(self, key)
     
     if key == 'q' then
@@ -56,7 +62,7 @@ function GameState:keyPressed(key)
 end
 
 
--- Draw everything for the state to the screen
+-- Draw everything for the state
 function GameState:draw()
     -- Super draw
     AppState.draw(self)
@@ -69,11 +75,18 @@ function GameState:draw()
         end
     end
     
+    -- If there is a hint position draw it
+    if self.game.hint then
+        self.boardArea:draw(assets.hint,
+            assets.toPixel(self.game.hint.column),
+            assets.toPixel(self.game.hint.row))
+    end
+    
     -- If there is a selection draw the selection inicator
-    if app.game.selection then
+    if self.game.selection then
         self.boardArea:draw(assets.selection,
-            assets.toPixel(self.app.game.selection.column),
-            assets.toPixel(self.app.game.selection.row))
+            assets.toPixel(self.game.selection.column),
+            assets.toPixel(self.game.selection.row))
     end
     
     -- Draw all the score stuff

@@ -42,6 +42,7 @@ function GameRunState:update(dt)
         else
             updateBoard = false
             self.game.scoreModifier = 1
+            self:checkForMoves()
         end
     end
     
@@ -105,7 +106,8 @@ function GameRunState:mousePressed(x, y, button)
             -- Set the blocks to be switched back
             switchBack = {block1, block2}
         end
-        self.game:setSelection() -- Clear selections
+        self.game:setSelection() -- Clear selection
+        self.game:setHint() -- Clear hint
         
     else
         -- There is no selection so set it to the row column clicked
@@ -120,6 +122,13 @@ end
 function GameRunState:keyPressed(key)
     -- Super key events
     GameState.keyPressed(self, key)
+    
+    if key == 'h' then
+        local hintBlock = self.board:getBlockWithMove()
+        if hintBlock then
+            self.game:setHint(hintBlock.row, hintBlock.column)
+        end
+    end
 end
 
 
@@ -146,6 +155,14 @@ function GameRunState:isClickOnBoard(row, column)
         return false
     end
     return true
+end
+
+-- Check to see if there are any moves left. If there are not then reset board
+function GameRunState:checkForMoves()
+    local blockWithMove = self.board:getBlockWithMove()
+    if not blockWithMove then
+        self.board:setBoard()
+    end
 end
 
 return GameRunState

@@ -9,6 +9,7 @@ function MainMenuState:init(app)
     AppState.init(self, app)
     self.menuArea = ScreenArea(240, 160, 320)
     self.settingsArea = ScreenArea(240, 400, 320)
+    self.infoArea = ScreenArea(0, 560, app.width)
 end
 
 function MainMenuState:update(dt)
@@ -49,6 +50,9 @@ function MainMenuState:draw()
     self.settingsArea:printCenter(string.format("%s %s",
             self.app.currentMode:typeToString(),
             self.app.currentMode:limitToString()), assets.blockSize)
+        
+    self.infoArea:printCenter(string.format("Version %s", self.app.version), 0)
+    self.infoArea:printCenter(self.app.company, assets.blockSize)
 end
 
 return MainMenuState

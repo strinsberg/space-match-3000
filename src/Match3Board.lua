@@ -311,6 +311,70 @@ function Match3Board:dropBlocks(droppingBlocks)
 end
 
 
+-- Get a block at random from the board that can be moved to create a match
+-- Returns nil if there are none
+function Match3Board:getBlockWithMove()
+    local blocksWithMoves = {}
+    -- Loop through every item on the board
+    for row = 1, self.rows do
+        for column = 1, self.columns do
+            -- Add any blocks that have moves to the blocks with moves array
+            functions.mergeArrays(blocksWithMoves, self:getBlock(row, column))
+        end
+    end
+    -- If there are blocks with moves return one at random else return nil
+    if #blocksWithMoves > 0 then
+        local randomNum = math.random(1, #blocksWithMoves)
+        return blocksWithMoves[randomNum]
+    else
+        return nil
+    end
+end
+
+
+-- Checks a block for matches if it was switched with the block to the right
+-- or below it. This is done because during looping moving up one row or
+-- column each loop means that the previous block already switched with the
+-- current block when it tested to the right or below. So it is not
+-- necessary to test above or to the left. Returns a block that can be moved
+-- to make a match or nil
+function Match3Board:getBlock(row, column)
+    local blocks = {}
+    -- Get a matched block if there is one between the block and the block
+    -- below it
+    if row < self.rows then
+        functions.mergeArrays(blocks,
+            self:getSwitchMatch(row, column, row + 1, column))
+    end
+    -- Get a matched block if there is one between the block and the block
+    -- right of it
+    if column < self.columns then
+        functions.mergeArrays(blocks,
+            self:getSwitchMatch(row, column, row, column + 1))
+    end
+    return blocks
+end
+
+
+-- If switching 2 blocks would create a match for either of them return
+-- the block that would have a match or nil
+function Match3Board:getSwitchMatch(row, column, row2, column2)
+    local blocks = {}
+    -- Switch the two blocks
+    self:switchBlocks(row, column, row2, column2)
+    -- Check the blocks for matches in their new positions
+    if self:isBlockMatched(row, column) then
+        blocks[#blocks + 1] = self.board[row][column]
+    end
+    if self:isBlockMatched(row2, column2) then
+        blocks[#blocks + 1] = self.board[row2][column2]
+    end
+    -- Switch the blocks back
+    self:switchBlocks(row, column, row2, column2)
+    -- Return a matched block or nil
+    return blocks
+end
+
 -- For debuging ----------------------------------------
 function Match3Board:toString()
     for i = 1, self.rows do
