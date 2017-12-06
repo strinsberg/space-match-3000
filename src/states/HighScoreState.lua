@@ -5,9 +5,8 @@ local HighScoreState = Class(AppState)
 
 function HighScoreState:init(app)
     AppState.init(self, app)
-    self.titleArea = ScreenArea(0, 120, app.width)
-    self.scoreArea = ScreenArea(0, 160, app.width)
-    self.menuArea = ScreenArea(0, 500, app.width)
+    self.currentScores = {}
+    self:setCurrentScores()
 end
 
 -- All updates for the state
@@ -26,12 +25,14 @@ end
 function HighScoreState:keyPressed(key)
     -- Super key pressed
     AppState.keyPressed(self, key)
-    if key == 'c' then
+    if key == 'return' then
         self.app:changeState(MainMenuState(self.app))
     elseif key == 'd' then
         self.app.currentMode:changeDifficulty()
+        self:setCurrentScores()
     elseif key == 'm' then
         self.app.currentMode:changeGameType()
+        self:setCurrentScores()
     end
 end
 
@@ -40,31 +41,46 @@ function HighScoreState:draw()
     -- Super draw
     AppState.draw(self)
     
+    -- Print out the Mode, limit, and difficulty for the set of high scores
     self.titleArea:printCenter(string.format("%s %s %s",
             self.app.currentMode:gameTypeString(),
             self.app.currentMode:limitToString(),
             self.app.currentMode:difficultyString()), 0)
     
-    -- This is essentially the easiest way to work with high scores
-    -- but it seems pretty resource intensive to just display scores
-    -- with all the modes when there are 10 entries that is a lot of looping
-    -- each cycle just to show a few lines
-    local line = 0 -- line to display entries on
+    -- Print out the list of scores for the current mode, limit, and difficulty
+    for i, score in ipairs(self.currentScores) do
+        self.scoreArea:printCenter(string.format("%s %s", score.score,
+                score.name), (i - 1) * assets.fontSize)
+    end
+    
+    -- Print out the menu
+    self.menuArea:printCenter("(d)ifficulty  (m)ode  continue (enter)", 0)
+    
+end
+
+
+-- Helper Methods --
+
+-- Set the current scores
+function HighScoreState:setCurrentScores()
+    self.currentScores = self:getCurrentScores()
+end
+
+
+-- Get high scores for the current difficulty, mode and limit
+function HighScoreState:getCurrentScores()
+    local scores = {}
     for i, score in ipairs(self.app.highScores) do
-        -- If the score is from the current mode and difficulty display it
+        -- If the score is from the current mode, limit and difficulty
         if score.gameType == self.app.currentMode:gameTypeString()
                 and tonumber(score.limit) == self.app.currentMode.limit
                 and score.difficulty ==
                 self.app.currentMode:difficultyString() then
-            -- Display the scores on consecutive lines
-            self.scoreArea:printCenter(string.format("%s %s", score.score,
-                    score.name), line * assets.fontSize)
-            line = line + 1 -- Increment line
+            -- add it to the current scores list
+            scores[#scores + 1] = score
         end
     end
-        
-    self.menuArea:printCenter("(d)ifficulty  (m)ode  (c)ontinue", 0)
-    
+    return scores
 end
 
 return HighScoreState

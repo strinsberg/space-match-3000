@@ -7,7 +7,8 @@ function M.writeHighScores(scores)
     love.filesystem.write('scores.dat', "")
     -- Print all the score entries and their difficulty and mode on one line in a text file
     for i, highScore in pairs(scores) do
-        love.filesystem.append('scores.dat', highScore:toString())
+        love.filesystem.append('scores.dat',
+                string.format("%s\n", highScore:toString()))
     end
 end
 

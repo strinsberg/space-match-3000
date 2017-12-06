@@ -1,6 +1,7 @@
 Class = require'src.Class'
 GameState = require'src.states.GameState'
 GameOverState = require'src.states.GameOverState'
+ScoreEntryState = require'src.states.ScoreEntryState'
 ScreenArea = require'src.view.ScreenArea'
 Mode = require'src.Mode'
 assets = require 'assets.assets'
@@ -23,9 +24,14 @@ function GameRunState:update(dt)
     
     -- Check for game over
     if self.game.isOver then
-        self.app:changeState(GameOverState(self.app))
-        -- Run a function to decide whether to go to the game over screen
-        -- or the score entry screen when the game is over
+        local currentScores, otherHighScores = self:getCurrentScores()
+        if (self:isHighScore(self.game.score, currentScores)
+                or #currentScores < 10) and self.game.score > 0 then
+            self.app:changeState(ScoreEntryState(
+                    self.app, currentScores, otherHighScores))
+        else
+            self.app:changeState(GameOverState(self.app))
+        end
     end
     
     -- Get all matches on the board and set state to update to animate them
@@ -167,6 +173,35 @@ function GameRunState:checkForMoves()
         self.board:setBoard()
         self.message = "-- No Moves Left. Board Reset --"
     end
+end
+
+-- Get high scores for the current difficulty, mode and limit
+function GameRunState:getCurrentScores()
+    local currentScores = {}
+    local otherScores = {}
+    for i, score in ipairs(self.app.highScores) do
+        -- If the score is from the current mode, limit and difficulty
+        if score.gameType == self.app.currentMode:gameTypeString()
+                and tonumber(score.limit) == self.app.currentMode.limit
+                and score.difficulty ==
+                self.app.currentMode:difficultyString() then
+            -- add it to the current scores list
+            currentScores[#currentScores + 1] = score
+        else
+            otherScores[#otherScores + 1] = score
+        end
+    end
+    return currentScores, otherScores
+end
+
+-- Find out if the score is high enough to be a high score
+function GameRunState:isHighScore(playerScore, highScores)
+    for i, score in ipairs(highScores) do
+        if playerScore > score.score then
+            return true
+        end
+    end
+    return false
 end
 
 return GameRunState

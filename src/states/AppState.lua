@@ -9,6 +9,9 @@ function AppState:init(app)
     -- Initialize the state
     self.app = app
     self.mainArea = ScreenArea(0, 0, app.width)
+    self.titleArea = ScreenArea(0, 120, app.width)
+    self.scoreArea = ScreenArea(0, 160, app.width)
+    self.menuArea = ScreenArea(0, 560, app.width)
 end
 
 function AppState:update(dt)
