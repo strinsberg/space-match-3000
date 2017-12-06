@@ -24,6 +24,8 @@ function GameOverState:keyPressed(key)
     -- Super key pressed
     AppState.keyPressed(self, key)
     if key == 'return' then
+        self.app:changeState(MainMenuState(self.app))
+    elseif key == 's' then
         self.app:changeState(HighScoreState(self.app))
     end
 end
@@ -33,12 +35,12 @@ function GameOverState:draw()
     -- Super draw
     AppState.draw(self)
     
-    self.titleArea:printCenter("Game Over", 0)
+    self.titleArea:printCenter("-- Game Over --", 0)
     self.scoreArea:printCenter(
             string.format("Final Score: %s", self.app.game.score),
             assets.blockSize)
     
-    self.menuArea:printCenter("continue (enter)", 0)
+    self.menuArea:printCenter("(s)cores  continue (enter)", 0)
 end
 
 return GameOverState

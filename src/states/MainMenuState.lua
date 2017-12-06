@@ -1,6 +1,7 @@
 Class = require'src.Class'
 AppState = require'src.states.AppState'
 HighScoreState = require'src.states.HighScoreState'
+HelpState = require'src.states.HelpState'
 ScreenArea = require'src.view.ScreenArea'
 assets = require'assets.assets'
 
@@ -37,6 +38,8 @@ function MainMenuState:keyPressed(key)
         self.app.currentMode:changeGameType()
     elseif key == 's' then
         self.app:changeState(HighScoreState(self.app))
+    elseif key == 'h' then
+        self.app:changeState(HelpState(self.app))
     end
 end
 

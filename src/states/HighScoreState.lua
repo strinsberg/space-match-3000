@@ -42,15 +42,16 @@ function HighScoreState:draw()
     AppState.draw(self)
     
     -- Print out the Mode, limit, and difficulty for the set of high scores
-    self.titleArea:printCenter(string.format("%s %s %s",
+    self.titleArea:printCenter("-- High Scores --", 0)
+    self.titleArea:printCenter(string.format("Game: %s %s %s",
             self.app.currentMode:gameTypeString(),
             self.app.currentMode:limitToString(),
-            self.app.currentMode:difficultyString()), 0)
+            self.app.currentMode:difficultyString()), assets.blockSize)
     
     -- Print out the list of scores for the current mode, limit, and difficulty
     for i, score in ipairs(self.currentScores) do
         self.scoreArea:printCenter(string.format("%s %s", score.score,
-                score.name), (i - 1) * assets.fontSize)
+                score.name), (i * assets.fontSize) + 5)
     end
     
     -- Print out the menu

@@ -11,6 +11,7 @@ function AppState:init(app)
     self.mainArea = ScreenArea(0, 0, app.width)
     self.titleArea = ScreenArea(0, 120, app.width)
     self.scoreArea = ScreenArea(0, 160, app.width)
+    self.textArea = ScreenArea(20, 160, app.width - 40)
     self.menuArea = ScreenArea(0, 560, app.width)
 end
 

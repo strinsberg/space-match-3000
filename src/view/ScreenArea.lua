@@ -16,4 +16,8 @@ function ScreenArea:printCenter(text, y)
     love.graphics.printf(text, self.x, self.y + y, self.width, 'center')
 end
 
+function ScreenArea:printLeft(text, y)
+    love.graphics.printf(text, self.x, self.y + y, self.width, 'left')
+end
+
 return ScreenArea
