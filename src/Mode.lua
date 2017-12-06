@@ -1,6 +1,10 @@
 Class = require'src.Class'
 functions = require'src.libFunctions'
 
+-- TODO fix the whole to string thing. functions must be changed anywhere they
+-- are called. the function with "Difficulty: " is redundant it can just be
+-- added in the draw function that renders it
+
 local Mode = Class()
 
 -- Mode Constants and local variables
@@ -88,26 +92,32 @@ end
 
 
 function Mode:typeToString()
-    local label = "Mode:"
+    return string.format("Mode: %s", self:gameTypeString())
+end
+
+function Mode:gameTypeString()
     if self.gameType == Mode.types.UNLIMITED then
-        return string.format("%s Endless", label)
+        return "Endless"
     elseif self.gameType == Mode.types.MOVES then
-        return string.format("%s Moves", label, self.limit)
+        return "Moves"
     elseif self.gameType == Mode.types.TIMED then
-        return string.format("%s Timed", label)
+        return "Timed"
     end
 end
 
 function Mode:diffToString()
-    local label = "Difficulty:"
+    return string.format("Difficulty: %s", self:difficultyString())
+end
+
+function Mode:difficultyString()
     if self.difficulty == Mode.diff.EASY then
-        return string.format("%s Easy", label)
+        return "Easy"
     elseif self.difficulty == Mode.diff.NORMAL then
-        return string.format("%s Normal", label)
+        return "Normal"
     elseif self.difficulty == Mode.diff.HARD then
-        return string.format("%s Hard", label)
+        return "Hard"
     else
-        return string.format("%s Rough", label)
+        return "Rough"
     end
 end
 

@@ -18,6 +18,7 @@ function App:init()
     self.version = "3.0"
     self.company = "Plimpton Productions"
     self.currentMode = Mode(Mode.types.UNLIMITED, Mode.diff.EASY, nil, true)
+    self.highScores = nil
 end
 
 function App:changeState(state)

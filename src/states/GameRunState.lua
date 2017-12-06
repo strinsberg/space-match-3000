@@ -1,5 +1,6 @@
 Class = require'src.Class'
 GameState = require'src.states.GameState'
+GameOverState = require'src.states.GameOverState'
 ScreenArea = require'src.view.ScreenArea'
 Mode = require'src.Mode'
 assets = require 'assets.assets'
@@ -22,7 +23,9 @@ function GameRunState:update(dt)
     
     -- Check for game over
     if self.game.isOver then
-        self.app:changeState(MainMenuState(self.app))
+        self.app:changeState(GameOverState(self.app))
+        -- Run a function to decide whether to go to the game over screen
+        -- or the score entry screen when the game is over
     end
     
     -- Get all matches on the board and set state to update to animate them
@@ -139,7 +142,7 @@ function GameRunState:draw()
 end
 
 
--- Helper methods
+-- Helper methods --
 
 -- Get the row and column for a click position with an x and y value
 function GameRunState:clickIndex(x, y)
@@ -160,8 +163,9 @@ end
 -- Check to see if there are any moves left. If there are not then reset board
 function GameRunState:checkForMoves()
     local blockWithMove = self.board:getBlockWithMove()
-    if not blockWithMove then
+    if  not blockWithMove then
         self.board:setBoard()
+        self.message = "-- No Moves Left. Board Reset --"
     end
 end
 

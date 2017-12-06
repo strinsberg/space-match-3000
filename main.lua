@@ -2,6 +2,7 @@
 assets = require'assets.assets'
 App = require'src.App'
 Area = require'src.view.ScreenArea'
+serialize = require'src.serialize'
 
 -- I think I might want to do all the imports in the main file and no where else.
 -- It gets a bit messy and because the imports in lua actually run the file it
@@ -12,13 +13,15 @@ math.randomseed( os.time() )
 
 -- Create app
 app = App()
-gArea = Area(240, 160, 320)
 
 -- Load all game assets
 function love.load()
     -- Load assets and set font
     assets.load()
     love.graphics.setFont(assets.font)
+    
+    -- Load the high scores from the scores.dat file
+    app.highScores = serialize.readHighScores()
 end
 
 -- Update all game elements

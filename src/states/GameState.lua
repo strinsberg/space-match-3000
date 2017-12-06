@@ -15,8 +15,10 @@ function GameState:init(app)
     self.scoreArea = ScreenArea(560, 160, 240)
     self.settingsArea = ScreenArea(0, 160, 240)
     self.menuArea = ScreenArea(120, 500, 560)
+    self.messageArea = ScreenArea(0, 110, app.width)
     self.game = app.game
     self.board = self.game.board
+    self.message = nil
 end
 
 
@@ -47,6 +49,8 @@ end
 -- Handle all mouse presses for the state
 function GameState:mousePressed(x, y, button)
     AppState.mousePressed(self, x, y, button)
+    
+    self.message = nil
 end
 
 
@@ -54,8 +58,10 @@ end
 function GameState:keyPressed(key)
     AppState.keyPressed(self, key)
     
+    self.message = nil
+    
     if key == 'q' then
-        self.app:changeState(MainMenuState(self.app))
+        self.game.isOver = true
     elseif key == 'p' then
         self.app:changeState(GamePauseState(self.app, self))
     end
@@ -110,6 +116,11 @@ function GameState:draw()
     -- draw menu like options
     self.menuArea:printCenter("(p)ause  (h)int  (q)uit",
             assets.blockSize * 1.5)
+        
+    -- Print the message if there is one
+    if self.message then
+        self.messageArea:printCenter(self.message, 0)
+    end
 end
 
 

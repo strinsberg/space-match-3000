@@ -1,5 +1,6 @@
 Class = require'src.Class'
 AppState = require'src.states.AppState'
+HighScoreState = require'src.states.HighScoreState'
 ScreenArea = require'src.view.ScreenArea'
 assets = require'assets.assets'
 
@@ -8,7 +9,7 @@ local MainMenuState = Class(AppState)
 function MainMenuState:init(app)
     AppState.init(self, app)
     self.menuArea = ScreenArea(240, 160, 320)
-    self.settingsArea = ScreenArea(240, 400, 320)
+    self.settingsArea = ScreenArea(240, 440, 320)
     self.infoArea = ScreenArea(0, 560, app.width)
 end
 
@@ -34,6 +35,8 @@ function MainMenuState:keyPressed(key)
         self.app.currentMode:changeDifficulty()
     elseif key == 'm' then
         self.app.currentMode:changeGameType()
+    elseif key == 's' then
+        self.app:changeState(HighScoreState(self.app))
     end
 end
 
@@ -44,7 +47,9 @@ function MainMenuState:draw()
     self.menuArea:printCenter("(n)ew game", 0)
     self.menuArea:printCenter("(d)ifficulty", assets.blockSize)
     self.menuArea:printCenter("(m)ode", assets.blockSize * 2)
-    self.menuArea:printCenter("(q)uit", assets.blockSize * 3)
+    self.menuArea:printCenter("(s)cores", assets.blockSize * 3)
+    self.menuArea:printCenter("(h)elp", assets.blockSize * 4)
+    self.menuArea:printCenter("(q)uit", assets.blockSize * 5)
     
     self.settingsArea:printCenter(self.app.currentMode:diffToString(), 0)
     self.settingsArea:printCenter(string.format("%s %s",
