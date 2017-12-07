@@ -3,10 +3,11 @@ AppState = require'src.states.AppState'
 
 local HighScoreState = Class(AppState)
 
-function HighScoreState:init(app)
+function HighScoreState:init(app, newScore)
     AppState.init(self, app)
     self.currentScores = {}
     self:setCurrentScores()
+    self.newScore = newScore or {score = 0, name = ""}
 end
 
 -- All updates for the state
@@ -42,20 +43,26 @@ function HighScoreState:draw()
     AppState.draw(self)
     
     -- Print out the Mode, limit, and difficulty for the set of high scores
-    self.titleArea:printCenter("-- High Scores --", 0)
-    self.titleArea:printCenter(string.format("Game: %s %s %s",
+    self.titleArea:printCenter("-- HIGH SCORES --", 0)
+    self.titleArea:printCenter(string.format("- %s %s %s -",
             self.app.currentMode:gameTypeString(),
             self.app.currentMode:limitToString(),
             self.app.currentMode:difficultyString()), assets.blockSize)
     
     -- Print out the list of scores for the current mode, limit, and difficulty
     for i, score in ipairs(self.currentScores) do
-        self.scoreArea:printCenter(string.format("%s %s", score.score,
-                score.name), (i * assets.fontSize) + 5)
+        if score.score == self.newScore.score
+                and score.name == self.newScore.name then
+            assets.setColor("green")
+        end
+        self.scoreArea:printCenter(score.score.." : "..score.name,
+                (i * assets.fontSize) + 5)
+        assets.setColor()
     end
     
     -- Print out the menu
-    self.menuArea:printCenter("(d)ifficulty  (m)ode  continue (enter)", 0)
+    self.menuArea:printCenter("(d)ifficulty  -  (m)ode  -  (enter) Main Menu", 0)
+    --self.menuArea:printCenter("(enter) for Main Menu", assets.fontSize)
     
 end
 

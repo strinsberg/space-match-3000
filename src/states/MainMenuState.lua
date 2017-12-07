@@ -9,7 +9,7 @@ local MainMenuState = Class(AppState)
 
 function MainMenuState:init(app)
     AppState.init(self, app)
-    self.menuArea = ScreenArea(240, 160, 320)
+    self.menuArea = ScreenArea(240, 180, 320)
     self.settingsArea = ScreenArea(240, 440, 320)
     self.infoArea = ScreenArea(0, 560, app.width)
 end
@@ -47,20 +47,22 @@ function MainMenuState:draw()
     -- Draw everything for the state to the screen
     AppState.draw(self)
     
+    self.titleArea:printCenter("-- MAIN MENU --", 0)
+    
     self.menuArea:printCenter("(n)ew game", 0)
-    self.menuArea:printCenter("(d)ifficulty", assets.blockSize)
-    self.menuArea:printCenter("(m)ode", assets.blockSize * 2)
-    self.menuArea:printCenter("(s)cores", assets.blockSize * 3)
-    self.menuArea:printCenter("(h)elp", assets.blockSize * 4)
-    self.menuArea:printCenter("(q)uit", assets.blockSize * 5)
+    self.menuArea:printCenter("(d)ifficulty", assets.fontSize)
+    self.menuArea:printCenter("(m)ode", assets.fontSize * 2)
+    self.menuArea:printCenter("(s)cores", assets.fontSize * 3)
+    self.menuArea:printCenter("(h)elp", assets.fontSize * 4)
+    self.menuArea:printCenter("(q)uit", assets.fontSize * 5)
     
     self.settingsArea:printCenter(self.app.currentMode:diffToString(), 0)
     self.settingsArea:printCenter(string.format("%s %s",
             self.app.currentMode:typeToString(),
-            self.app.currentMode:limitToString()), assets.blockSize)
+            self.app.currentMode:limitToString()), assets.fontSize)
         
     self.infoArea:printCenter(string.format("Version %s", self.app.version), 0)
-    self.infoArea:printCenter(self.app.company, assets.blockSize)
+    self.infoArea:printCenter(self.app.company, assets.fontSize)
 end
 
 return MainMenuState

@@ -39,9 +39,9 @@ end
 function HelpState:draw()
     -- Super Draw
     AppState.draw(self)
-    self.titleArea:printCenter("-- Help --", 0)
+    self.titleArea:printCenter("-- HELP --", 0)
     self.textArea:printLeft(table.concat(self.text, ""), 0)
-    self.menuArea:printCenter("continue (enter)", 0)
+    self.menuArea:printCenter("(enter) Main Menu", 0)
 end
 
 return HelpState

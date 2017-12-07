@@ -96,12 +96,25 @@ function GameState:draw()
     end
     
     -- Draw all the score stuff
-    self.scoreArea:printCenter(string.format("Score: %s", self.game.score), 0)
-    self.scoreArea:printCenter(string.format("Modifier: %s",
-            self.game.scoreModifier), assets.blockSize)
+    self.scoreArea:printCenter("Score: "..self.game.score, 0)
+    -- Set color for modifier
+    if self.game.scoreModifier > 3 and self.game.scoreModifier <= 6 then
+        assets.setColor('green')
+    elseif self.game.scoreModifier > 6 then
+        assets.setColor('red')
+    end
+    self.scoreArea:printCenter("Modifier: "..self.game.scoreModifier,
+            assets.blockSize)
+    assets.setColor() -- Color back to white
     self.scoreArea:printCenter("Match Scores", assets.blockSize * 2)
     for i, score in ipairs(self.game.matchScores) do
+        if score.score > 10 and score.score <= 25 then
+            assets.setColor('green')
+        elseif score.score > 25 then
+            assets.setColor('red')
+        end
         self.scoreArea:printCenter(score.score, (i + 2) * assets.blockSize)
+        assets.setColor()
     end
     
     -- Draw all the settings stuff
@@ -114,7 +127,7 @@ function GameState:draw()
     end
     
     -- draw menu like options
-    self.menuArea:printCenter("(p)ause  (h)int  (q)uit",
+    self.menuArea:printCenter("(p)ause  -  (h)int  -  (q)uit",
             assets.blockSize * 1.5)
         
     -- Print the message if there is one

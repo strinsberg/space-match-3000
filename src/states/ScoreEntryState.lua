@@ -31,14 +31,17 @@ function ScoreEntryState:keyPressed(key)
     elseif key == 'backspace' and #self.name > 0 then
         self.name[#self.name] = nil
     elseif key == 'return' then
-        -- Add the new score to the high scores for the mode
-        self.currentHighScores[#self.currentHighScores + 1] = HighScore(
+        -- Create a score object for the new score
+        local playerScore = HighScore(
                 self.app.currentMode:gameTypeString(),
                 self.app.currentMode.limit,
                 self.app.currentMode:difficultyString(),
                 table.concat(self.name, ""), self.app.game.score)
+        -- Add the player score to the high scores for the mode
+        self.currentHighScores[#self.currentHighScores + 1] = playerScore
         -- Sort the scores from highest to lowest
-        table.sort(self.currentHighScores, function(a,b) return a.score>b.score end)
+        table.sort(self.currentHighScores,
+                function(a,b) return a.score>b.score end)
         -- If adding the new score put the number of scores over 10
         -- Set the last and lowest score to nil
         if #self.currentHighScores > 10 then
@@ -54,19 +57,19 @@ function ScoreEntryState:keyPressed(key)
         -- Serialize the new high scores
         serialize.writeHighScores(self.app.highScores)
         -- Change state to the high score screen
-        self.app:changeState(HighScoreState(self.app))
+        self.app:changeState(HighScoreState(self.app, playerScore))
     end
 end
 
 
 function ScoreEntryState:draw()
     AppState.draw(self)
-    self.titleArea:printCenter("-- New High Score --", 0)
-    self.scoreArea:printCenter(string.format("Final Score: %s",
-        self.app.game.score), assets.blockSize)
-    self.scoreArea:printCenter("Enter your name:", assets.blockSize * 2)
-    self.scoreArea:printCenter(table.concat(self.name, ""), assets.blockSize * 3)
-    self.menuArea:printCenter("continue (enter)", 0)
+    self.titleArea:printCenter("-- NEW HIGH SCORE --", 0)
+    self.scoreArea:printCenter("Final Score: "..self.app.game.score,
+            assets.fontSize)
+    self.scoreArea:printCenter("Enter Your Name: "..table.concat(self.name, ""),
+            assets.fontSize * 3)
+    self.menuArea:printCenter("(enter) Continue", 0)
 end
 
 return ScoreEntryState

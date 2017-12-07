@@ -69,5 +69,15 @@ function assets.toIndex(pixel)
     return math.floor(pixel / assets.blockSize) + 1
 end
 
+-- Set the color using a string parameter. nil will set white.
+function assets.setColor(color)
+    if color == "green" then
+        love.graphics.setColor(0, 255, 0, 255)
+    elseif color == "red" then
+        love.graphics.setColor(255, 0, 0, 255)
+    else
+        love.graphics.setColor(255, 255, 255, 255)
+    end
+end
 -- Return the assets object
 return assets

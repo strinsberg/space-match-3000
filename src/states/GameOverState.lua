@@ -35,12 +35,12 @@ function GameOverState:draw()
     -- Super draw
     AppState.draw(self)
     
-    self.titleArea:printCenter("-- Game Over --", 0)
+    self.titleArea:printCenter("-- GAME OVER --", 0)
     self.scoreArea:printCenter(
             string.format("Final Score: %s", self.app.game.score),
-            assets.blockSize)
+            assets.fontSize)
     
-    self.menuArea:printCenter("(s)cores  continue (enter)", 0)
+    self.menuArea:printCenter("(s)cores  -  (enter) Main Menu", 0)
 end
 
 return GameOverState

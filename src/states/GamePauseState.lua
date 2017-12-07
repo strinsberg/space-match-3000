@@ -35,7 +35,7 @@ function GamePauseState:draw()
     self.lastState:draw()
     self.boardArea:printCenter("-- Game Paused --", -assets.blockSize * 1.5)
     -- draw menu like options
-    self.menuArea:printCenter("(r)esume", 0)
+    self.menuArea:printCenter("-- (r)esume --", 0)
 end
 
 return GamePauseState
