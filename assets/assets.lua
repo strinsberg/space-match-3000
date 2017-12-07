@@ -17,6 +17,7 @@ local imageFiles = {
     silverBlock = "assets/silver.png",
     orangeBlock = "assets/orange.png",
     pinkBlock = "assets/pink.png",
+    blankBlock = "assets/blank.png",
     background = "assets/background.png",
     selection = "assets/selection.png",
     hint = "assets/hint.png"
@@ -41,7 +42,9 @@ end
 -- Get the image based on a block color
 -- Add local color constants instead of hardcoded numbers
 function assets.getBlockImage(color)
-    if color == 1 then
+    if color == 0 then
+        return assets.blankBlock
+    elseif color == 1 then
         return assets.blueBlock
     elseif color == 2 then
         return assets.greenBlock

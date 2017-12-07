@@ -1,10 +1,8 @@
 -- Planning for space match 3.0 --
 
 TODO's
-- add a no refill option or game type
-- use .. for string concat instead of all the string formats
-- Make the default score file nicer
 - play the game a bunch and look for bugs or undesirable behaviour
+- use .. for string concat instead of all the string formats
 - finalize the working and features of the game for now so that it can be released
     even if you work on refactoring it for a better code base.
 - standardize the presentation of your code so each file has a consistent style
@@ -15,3 +13,4 @@ TODO's
 - Consider creating a view module for all the screen areas to be left in. They
     could then be accesed in any file without having to redeclare them or find
     perfect places for them in each state.
+- REFACTOR REFACTOR REFACTOR

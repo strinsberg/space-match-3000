@@ -9,12 +9,12 @@ function HelpState:init(app)
     AppState.init(self, app)
     self.text = {"Menu items can be activated with the key in brackets.\n",
             "Ex. (q)uit - press \"q\" to quit.\n",
-            "\nIn game the \"left-mouse-button\" selects an item. If the next",
-            " \"left\" click is on an adjacent item the selected item will be",
-            "switched with that item.\n",
+            "\nIn game the \"left-mouse-button\" selects an block. If the next",
+            " \"left\" click is on an adjacent block the selected block will be ",
+            "switched with that block, else the new block will be selected. ",
             "The \"right-mouse-button\" removes the selection.\n",
-            "\nPressing \"h\" during the game will highlight an item that ",
-            "can be matched, \"p\" will pause and return to the main menu, ",
+            "\nPressing \"h\" during the game will highlight an block that ",
+            "can be matched, \"p\" will pause, \"r\" will resume, ",
             "and \"q\" will end the game prematurely.\n"}
 end
 
@@ -40,7 +40,7 @@ function HelpState:draw()
     -- Super Draw
     AppState.draw(self)
     self.titleArea:printCenter("-- HELP --", 0)
-    self.textArea:printLeft(table.concat(self.text, ""), 0)
+    self.textArea:printLeft(table.concat(self.text, ""), 20)
     self.menuArea:printCenter("(enter) Main Menu", 0)
 end
 

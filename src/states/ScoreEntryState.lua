@@ -64,7 +64,9 @@ end
 
 function ScoreEntryState:draw()
     AppState.draw(self)
+    assets.setColor('green')
     self.titleArea:printCenter("-- NEW HIGH SCORE --", 0)
+    assets.setColor()
     self.scoreArea:printCenter("Final Score: "..self.app.game.score,
             assets.fontSize)
     self.scoreArea:printCenter("Enter Your Name: "..table.concat(self.name, ""),

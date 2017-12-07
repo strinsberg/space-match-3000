@@ -33,9 +33,10 @@ end
 
 -- Convert seconds as minute:seconds
 function functions.secToMin (seconds)
-    local t = nil
+    local t = ""
     local sec = math.floor(seconds % 60)
     local minutes = math.floor(seconds / 60)
+    if seconds <= 0 then return "0:00" end
     if sec < 10 then
         t = string.format("%s:0%s", minutes, sec)
     else

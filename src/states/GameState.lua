@@ -122,9 +122,16 @@ function GameState:draw()
     self.settingsArea:printCenter(self.game.mode:typeToString(),
             assets.blockSize)
     if self.game.mode.limit then
-        self.settingsArea:printCenter(self.game.mode:limitLeftToString(),
-                assets.blockSize * 2)
+        local left = self.game.mode.limitLeft
+        if left <= 10 then
+            assets.setColor('red')
+        end
+    elseif not self.game.mode.refill then
+        assets.setColor('red')
     end
+    self.settingsArea:printCenter(self.game.mode:limitLeftToString(),
+                assets.blockSize * 2)
+    assets.setColor()
     
     -- draw menu like options
     self.menuArea:printCenter("(p)ause  -  (h)int  -  (q)uit",
@@ -142,7 +149,7 @@ end
 -- Draw a block on the board
 function GameState:drawBlock(block, row, column)
     -- If the block is visible then draw it
-    if block.isVisible and block.color ~= 0 then
+    if block.isVisible then
         self.boardArea:draw(assets.getBlockImage(block.color),
                 assets.toPixel(column), assets.toPixel(row))
     end

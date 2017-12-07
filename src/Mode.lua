@@ -146,6 +146,10 @@ function Mode:limitLeftToString()
     elseif self.gameType == Mode.types.TIMED then
         return string.format("Time Left: %s",
                 functions.secToMin(self.limitLeft))
+    elseif not self.refill then
+        return "No-Refill"
+    else
+        return ""
     end
 end
 

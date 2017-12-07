@@ -35,7 +35,9 @@ function GameOverState:draw()
     -- Super draw
     AppState.draw(self)
     
+    assets.setColor('red')
     self.titleArea:printCenter("-- GAME OVER --", 0)
+    assets.setColor()
     self.scoreArea:printCenter(
             string.format("Final Score: %s", self.app.game.score),
             assets.fontSize)
