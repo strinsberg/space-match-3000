@@ -3,16 +3,6 @@ Block = require'src.Block'
 Match = require'src.Match'
 functions = require'src.libFunctions'
 
---[[
-    Class to represent a match 3 board
-    TODO
-    -- Still does not have a hint finding function. Maybe make it so it
-    finds all the blocks that have an available move and then choose one
-    at random. Might be a little bit too intense for just finding one hint.
-    could also go row by row but do it randomly.
---]]
-
-
 local Match3Board = Class()
 
 -- local helper variables
