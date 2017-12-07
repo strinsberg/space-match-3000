@@ -142,7 +142,7 @@ end
 -- Draw a block on the board
 function GameState:drawBlock(block, row, column)
     -- If the block is visible then draw it
-    if block.isVisible then
+    if block.isVisible and block.color ~= 0 then
         self.boardArea:draw(assets.getBlockImage(block.color),
                 assets.toPixel(column), assets.toPixel(row))
     end

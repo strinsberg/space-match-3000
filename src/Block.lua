@@ -4,7 +4,11 @@ local Block = Class()
 
 -- Create a new block with a random color
 function Block:init(numColors, row, column)
-    self.color = math.random(1, numColors)
+    if numColors == 0 then
+        self.color = 0
+    else
+        self.color = math.random(1, numColors)
+    end
     self.row = row
     self.column = column
     -- Mostly for moving blocks

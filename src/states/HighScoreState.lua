@@ -81,7 +81,7 @@ function HighScoreState:getCurrentScores()
     for i, score in ipairs(self.app.highScores) do
         -- If the score is from the current mode, limit and difficulty
         if score.gameType == self.app.currentMode:gameTypeString()
-                and tonumber(score.limit) == self.app.currentMode.limit
+                and score.limit == self.app.currentMode:limitToString()
                 and score.difficulty ==
                 self.app.currentMode:difficultyString() then
             -- add it to the current scores list

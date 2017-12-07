@@ -34,7 +34,7 @@ function ScoreEntryState:keyPressed(key)
         -- Create a score object for the new score
         local playerScore = HighScore(
                 self.app.currentMode:gameTypeString(),
-                self.app.currentMode.limit,
+                self.app.currentMode:limitToString(),
                 self.app.currentMode:difficultyString(),
                 table.concat(self.name, ""), self.app.game.score)
         -- Add the player score to the high scores for the mode

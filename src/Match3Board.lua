@@ -56,6 +56,9 @@ end
 function Match3Board:isBlockMatchedColumn(row, column)
     local matchLength = 0
     local color = self.board[row][column].color
+    if color == 0 then
+        return false
+    end
     for i = row - 2, row + 2 do
         -- Make sure you dont try to check positions that dont exist
         if i > 0 and i < self.rows + 1 then
@@ -80,6 +83,9 @@ end
 function Match3Board:isBlockMatchedRow(row, column)
     local matchLength = 0
     local color = self.board[row][column].color
+    if color == 0 then
+        return false
+    end
     for i = column - 2, column + 2 do
         -- Make sure you dont try to check positions that dont exist
         if i > 0 and i < self.columns + 1 then
@@ -166,7 +172,8 @@ function Match3Board:getRowMatches(row)
         if self.board[row][column].color ~= matchColor
                 or column == self.columns then
             -- If the matched blocks are enough to make a match
-            if matchLength >= minLength then
+            -- and the match is not empty blocks
+            if matchLength >= minLength and matchColor ~= 0 then
                 -- For each block in the match add it to the current match
                 for i = 0, matchLength - 1 do
                     currentMatch:addBlock(self.board[row][matchStart + i])
@@ -209,7 +216,8 @@ function Match3Board:getColumnMatches(column)
         if self.board[row][column].color ~= matchColor
                 or row == self.rows then
             -- If the matched blocks are enough to make a match
-            if matchLength >= minLength then
+            -- and the match is not empty blocks
+            if matchLength >= minLength and matchColor ~= 0 then
                 -- For each block in the match add it to the current match
                 for i = 0, matchLength - 1 do
                     currentMatch:addBlock(self.board[matchStart + i][column])
@@ -238,7 +246,7 @@ function Match3Board:removeMatches(matches)
     for i, match_ in ipairs(matches) do
         for i, block in ipairs(match_.blocks) do
             -- Remove each matched block from the board
-            self.board[block.row][block.column] = 0
+            self.board[block.row][block.column] = Block(0, block.row, block.column)
         end
     end
 end
@@ -247,7 +255,7 @@ end
 -- Get a list of all blocks that will replace empty spaces on the board
 function Match3Board:getDroppingBlocks(refill)
     local droppingBlocks = {}
-    for column = 0, self.columns do
+    for column = 1, self.columns do
         droppingBlocks = functions.mergeArrays(droppingBlocks,
                 self:getDroppingBlocksColumn(column, refill))
     end
@@ -266,13 +274,13 @@ function Match3Board:getDroppingBlocksColumn(column, refill)
         local block = self.board[row][column]
         
         -- If the space has no block add its row to the array
-        if block == 0 then
+        if block.color == 0 then
             if numEmpty == 0 then
                 emptyStart = row
             end
             numEmpty = numEmpty + 1 -- Increment total empty spaces
         -- If the space has a block and empty spaces have been found
-        elseif block ~= 0 and numEmpty > 0 then
+        elseif block.color ~= 0 and numEmpty > 0 then
             block.moveRow = emptyStart -- Row the block is going to move to
             -- Add block to tho list of blocks that will dropp
             droppingBlocks[#droppingBlocks + 1] = block
@@ -293,7 +301,7 @@ function Match3Board:getDroppingBlocksColumn(column, refill)
     else
         -- If refill is false set empty cells to 0
         for i = numEmpty, 1, -1 do
-            self.board[i][column] = 0
+            self.board[i][column] = Block(0, i, column)
         end
     end
     -- testing

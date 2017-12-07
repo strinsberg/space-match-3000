@@ -1,9 +1,6 @@
 -- Planning for space match 3.0 --
 
 TODO's
-- mod coloring, maybe even match score coloring, maybe difficulty coloring
-- all caps menu titles
-- find a way to highlight the score that player just got when doing high scores
 - add a no refill option or game type
 - use .. for string concat instead of all the string formats
 - Make the default score file nicer

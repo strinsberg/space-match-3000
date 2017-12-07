@@ -19,7 +19,6 @@ function Game:init(mode)
     self.selection = nil
     self.hint = nil
     self.isOver = false
-    self.refill = true -- Move to mode when it is ready
 end
 
 

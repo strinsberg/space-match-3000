@@ -44,7 +44,7 @@ function GameRunState:update(dt)
             -- Remove all the matches
             self.board:removeMatches(matches)
             local droppingBlocks =
-                    self.board:getDroppingBlocks(self.game.refill)
+                    self.board:getDroppingBlocks(self.game.mode.refill)
             self.board:dropBlocks(droppingBlocks)
             -- set update state with all blocks that need to be updated
             self.app:changeState(GameUpdateState(self.app, droppingBlocks))
@@ -119,8 +119,10 @@ function GameRunState:mousePressed(x, y, button)
         self.game:setHint() -- Clear hint
         
     else
-        -- There is no selection so set it to the row column clicked
-        self.game:setSelection(row, column)
+        if self.game.board.board[row][column].color ~= 0 then
+            -- There is no selection so set it to the row column clicked
+            self.game:setSelection(row, column)
+        end
     end
     -- somewhere in this section update limits or maybe have move made var
     -- to allow update to update limits?
@@ -169,9 +171,13 @@ end
 -- Check to see if there are any moves left. If there are not then reset board
 function GameRunState:checkForMoves()
     local blockWithMove = self.board:getBlockWithMove()
-    if  not blockWithMove then
-        self.board:setBoard()
-        self.message = "-- No Moves Left. Board Reset --"
+    if not blockWithMove then
+        if self.refill then
+            self.board:setBoard()
+            self.message = "-- No Moves Left. Board Reset --"
+        else
+            self.game.isOver = true
+        end
     end
 end
 
@@ -182,7 +188,7 @@ function GameRunState:getCurrentScores()
     for i, score in ipairs(self.app.highScores) do
         -- If the score is from the current mode, limit and difficulty
         if score.gameType == self.app.currentMode:gameTypeString()
-                and tonumber(score.limit) == self.app.currentMode.limit
+                and score.limit == self.app.currentMode:limitToString()
                 and score.difficulty ==
                 self.app.currentMode:difficultyString() then
             -- add it to the current scores list

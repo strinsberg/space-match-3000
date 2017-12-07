@@ -82,11 +82,16 @@ function Mode:changeGameType()
             self.limit = moveLimits[typeIndex]
             self.limitLeft = self.limit
         end
-    else
-        self.gameType = Mode.types.TIMED
-        typeIndex = 1
-        self.limit = timeLimits[typeIndex]
-        self.limitLeft = self.limit
+    elseif self.gameType == Mode.types.UNLIMITED then
+        if self.refill then
+            self.refill = false
+        else
+            self.refill = true
+            self.gameType = Mode.types.TIMED
+            typeIndex = 1
+            self.limit = timeLimits[typeIndex]
+            self.limitLeft = self.limit
+        end
     end
 end
 
@@ -127,7 +132,11 @@ function Mode:limitToString()
     elseif self.gameType == Mode.types.TIMED then
         return string.format("%s", functions.secToMin(self.limit))
     else
-        return ""
+        if self.refill then
+            return "Refill"
+        else
+            return "No-Refill"
+        end
     end
 end
 

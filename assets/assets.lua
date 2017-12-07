@@ -53,8 +53,11 @@ function assets.getBlockImage(color)
         return assets.purpleBlock
     elseif color == 6 then
         return assets.pinkBlock
-    else
+    elseif color == 7 then
         return assets.silverBlock -- change to the last color
+    else
+        -- should never be called so if you see orange ERROR
+        return assets.orangeBlock
     end
 end
 
