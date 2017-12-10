@@ -25,9 +25,6 @@ end
 
 function AppState:keyPressed(key)
     -- Handle key press events for the state
-    if key == 'escape' then
-        love.event.quit()
-    end
 end
 
 function AppState:draw()

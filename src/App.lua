@@ -19,6 +19,7 @@ function App:init()
     self.company = "Plimpton Productions"
     self.currentMode = Mode(Mode.types.UNLIMITED, Mode.diff.EASY, nil, true)
     self.highScores = nil
+    self.name = nil
 end
 
 function App:changeState(state)

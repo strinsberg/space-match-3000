@@ -9,7 +9,11 @@ function ScoreEntryState:init(app, currentHighScores, otherHighScores)
     AppState.init(self, app)
     self.currentHighScores = currentHighScores
     self.otherHighScores = otherHighScores
-    self.name = {}
+    if self.app.name then
+        self.name = self.app.name
+    else
+        self.name = {}
+    end
     self.validChars = "abcdefghijklmnopqrstuvwxyz"
 end
 
@@ -31,6 +35,10 @@ function ScoreEntryState:keyPressed(key)
     elseif key == 'backspace' and #self.name > 0 then
         self.name[#self.name] = nil
     elseif key == 'return' then
+        if table.concat(self.name) == "" then
+            self.name = {"?","?","?"}
+        end
+        self.app.name = self.name
         -- Create a score object for the new score
         local playerScore = HighScore(
                 self.app.currentMode:gameTypeString(),
