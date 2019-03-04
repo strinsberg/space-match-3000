@@ -3,12 +3,21 @@ Block = require'src.Block'
 Match = require'src.Match'
 functions = require'src.libFunctions'
 
+---------------------------------------------------------------------
+-- A match 3 board.
+-- This class is super huge. It is worth seeing if with your
+-- updated knowledge you can design it better and split up some of
+-- the responsibilities
+---------------------------------------------------------------------
 local Match3Board = Class()
 
--- local helper variables
+-- The minimun number of blocks that make a match
 local minLength = 3
 
--- Constructor sets initial state of the board
+
+---------------------------------------------------------------------
+-- Initialize the board.
+---------------------------------------------------------------------
 function Match3Board:init(rows, columns, numColors)
     self.rows = rows
     self.columns = columns
@@ -17,8 +26,9 @@ function Match3Board:init(rows, columns, numColors)
     self:setBoard()
 end
 
-
--- Set the board with new random blocks in the range of numColors
+---------------------------------------------------------------------
+-- Setup the board with random blocks.
+---------------------------------------------------------------------
 function Match3Board:setBoard()
     for row = 1, self.rows do
         for column = 1, self.columns do
@@ -31,7 +41,13 @@ function Match3Board:setBoard()
 end
 
 
+-- This can be done better! Check the pico version you started
+---------------------------------------------------------------------
 -- Check to see if a block is matched with blocks around it.
+-- row -> the row of the block
+-- column -> the column of the block
+-- return -> true if the block has matches around it
+---------------------------------------------------------------------
 function Match3Board:isBlockMatched(row, column)
     if self:isBlockMatchedRow(row, column)
             or self:isBlockMatchedColumn(row, column) then
@@ -41,8 +57,13 @@ function Match3Board:isBlockMatched(row, column)
     end
 end
 
--- Checks the min number of blocks in the column to see
--- if the block has a match
+
+---------------------------------------------------------------------
+-- Checks if the block has matches in it's column
+-- row -> the row of the block
+-- column -> the column of the block
+-- return -> true if the block has matches around it
+---------------------------------------------------------------------
 function Match3Board:isBlockMatchedColumn(row, column)
     local matchLength = 0
     local color = self.board[row][column].color
@@ -69,7 +90,12 @@ function Match3Board:isBlockMatchedColumn(row, column)
     return false
 end
 
--- Checks the min number of blocks in the row to see if the block has a match
+---------------------------------------------------------------------
+-- Checks if the block has matches in it's row
+-- row -> the row of the block
+-- column -> the column of the block
+-- return -> true if the block has matches around it
+---------------------------------------------------------------------
 function Match3Board:isBlockMatchedRow(row, column)
     local matchLength = 0
     local color = self.board[row][column].color
@@ -97,7 +123,14 @@ function Match3Board:isBlockMatchedRow(row, column)
 end
 
 
--- Switch one bock with another returns the blocks switched
+---------------------------------------------------------------------
+-- Switches 2 blocks.
+-- row -> the row of the block
+-- column -> the column of the block
+-- otherRow -> the row of the block
+-- otherColumn -> the column of the block
+-- return -> block, otherBlock
+---------------------------------------------------------------------
 function Match3Board:switchBlocks(row, column, otherRow, otherColumn)
     local block = self.board[row][column]
     local otherBlock = self.board[otherRow][otherColumn]
@@ -109,7 +142,9 @@ function Match3Board:switchBlocks(row, column, otherRow, otherColumn)
 end
 
 
--- Check to see if a move is adjacent horizontally or vertically
+---------------------------------------------------------------------
+-- Check to see if 2 squares are adjacent
+---------------------------------------------------------------------
 function Match3Board:isAdjacentMove(row, column, newRow, newColumn)
     if math.abs(row - newRow) == 1 and math.abs(column - newColumn) == 0 or
             math.abs(row - newRow) == 0 and math.abs(column - newColumn) == 1 then
@@ -120,7 +155,13 @@ function Match3Board:isAdjacentMove(row, column, newRow, newColumn)
 end
 
 
--- Get all the matches that are on the board
+-- This should all definately be overhauled, as you can do it
+-- in a simpler way, or at least not have almost identical code
+-- for row and column
+---------------------------------------------------------------------
+-- Get all the matches on teh board
+-- return an array of Matches
+---------------------------------------------------------------------
 function Match3Board:getMatches()
     local matches = {} -- All the matches on the board
     local rowMatches = {} -- All the matches in rows
@@ -142,7 +183,9 @@ function Match3Board:getMatches()
 end
 
 
--- Get all the matches from a row
+---------------------------------------------------------------------
+-- Get all matches from a row
+---------------------------------------------------------------------
 function Match3Board:getRowMatches(row)
     local matches = {}
     local currentMatch = Match()
@@ -186,7 +229,9 @@ function Match3Board:getRowMatches(row)
 end
 
 
--- Get all the matches from a column
+---------------------------------------------------------------------
+-- Get all matches from a column
+---------------------------------------------------------------------
 function Match3Board:getColumnMatches(column)
     local matches = {}
     local currentMatch = Match()
@@ -230,7 +275,9 @@ function Match3Board:getColumnMatches(column)
 end
 
 
--- Remove Matches from the board
+---------------------------------------------------------------------
+-- Remove a group of matches from the board
+---------------------------------------------------------------------
 function Match3Board:removeMatches(matches)
     -- For each match
     for i, match_ in ipairs(matches) do
@@ -242,7 +289,9 @@ function Match3Board:removeMatches(matches)
 end
 
 
--- Get a list of all blocks that will replace empty spaces on the board
+---------------------------------------------------------------------
+-- Get all the blocks that are dropping
+---------------------------------------------------------------------
 function Match3Board:getDroppingBlocks(refill)
     local droppingBlocks = {}
     for column = 1, self.columns do
@@ -299,7 +348,9 @@ function Match3Board:getDroppingBlocksColumn(column, refill)
 end
 
 
--- Move all blocks that need to drop into their new spaces
+---------------------------------------------------------------------
+-- Move all dropping blocks into their new places
+---------------------------------------------------------------------
 function Match3Board:dropBlocks(droppingBlocks)
     for i, block in ipairs(droppingBlocks) do
         self.board[block.moveRow][block.column] = block

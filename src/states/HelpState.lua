@@ -1,9 +1,18 @@
 Class = require'src.Class'
 assets = require'assets.assets'
 
--- Base class/interface for all app state classes
+---------------------------------------------------------------------
+-- The state of the app for the help screen
+-- AppState -> The base state for app states
+---------------------------------------------------------------------
 local HelpState = Class(AppState)
 
+
+-- The text could be done better
+---------------------------------------------------------------------
+-- Initialize the state
+-- app -> the app the state is part of
+---------------------------------------------------------------------
 function HelpState:init(app)
     -- Super Constructor
     AppState.init(self, app)
@@ -18,30 +27,35 @@ function HelpState:init(app)
             "and \"q\" will end the game prematurely.\n"}
 end
 
-function HelpState:update(dt)
-    -- Super update
-    AppState.update(self, dt)
-end
 
-function HelpState:mousePressed(x, y, button)
-    -- Super mousePressed
-    AppState.mousePressed(self, x, y, button)
-end
-
+---------------------------------------------------------------------
+-- Handler for key press events
+-- key -> the key pressed
+---------------------------------------------------------------------
 function HelpState:keyPressed(key)
     -- Super keyPressed
     AppState.keyPressed(self, key)
+    
+    -- State specific keys
     if key == 'return' then
         self.app:changeState(MainMenuState(self.app))
     end
 end
 
+
+---------------------------------------------------------------------
+-- Draw the state information
+---------------------------------------------------------------------
 function HelpState:draw()
     -- Super Draw
     AppState.draw(self)
+    
+    -- State specific drawing
     self.titleArea:printCenter("-- HELP --", 0)
     self.textArea:printLeft(table.concat(self.text, ""), 20)
     self.menuArea:printCenter("(enter) Main Menu", 0)
 end
 
+
+-- Return the module
 return HelpState

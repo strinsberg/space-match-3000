@@ -1,8 +1,18 @@
 Class = require'src.Class'
 AppState = require'src.states.AppState'
 
+---------------------------------------------------------------------
+-- The state of the app for the high score screen
+-- AppState -> The base state for app states
+---------------------------------------------------------------------
 local HighScoreState = Class(AppState)
 
+
+---------------------------------------------------------------------
+-- Initialize the state
+-- app -> the app the state is part of
+-- newScore -> a new high score
+---------------------------------------------------------------------
 function HighScoreState:init(app, newScore)
     AppState.init(self, app)
     self.currentScores = {}
@@ -10,19 +20,30 @@ function HighScoreState:init(app, newScore)
     self.newScore = newScore or {score = 0, name = ""}
 end
 
--- All updates for the state
+---------------------------------------------------------------------
+-- Update the state
+-- dt -> delta time
+---------------------------------------------------------------------
 function HighScoreState:update(dt)
     -- Super update
     AppState.update(self, dt)
 end
 
--- Handle mouse events for the state
+---------------------------------------------------------------------
+-- Handler for mouse events
+-- x -> the x coord of the event
+-- y -> the y coord of the event
+-- button -> the mouse button pressed
+---------------------------------------------------------------------
 function HighScoreState:mousePressed(x, y, button)
     -- Super mouse pressed
     AppState.mousePressed(app, x, y, button)
 end
 
--- Handle key press events for the state
+---------------------------------------------------------------------
+-- Handler for key press events
+-- key -> the key pressed
+---------------------------------------------------------------------
 function HighScoreState:keyPressed(key)
     -- Super key pressed
     AppState.keyPressed(self, key)
@@ -37,7 +58,9 @@ function HighScoreState:keyPressed(key)
     end
 end
 
--- Draw everything for the state
+---------------------------------------------------------------------
+-- Draw the state information
+---------------------------------------------------------------------
 function HighScoreState:draw()
     -- Super draw
     AppState.draw(self)
@@ -66,16 +89,18 @@ function HighScoreState:draw()
     
 end
 
-
--- Helper Methods --
-
+---------------------------------------------------------------------
 -- Set the current scores
+---------------------------------------------------------------------
 function HighScoreState:setCurrentScores()
     self.currentScores = self:getCurrentScores()
 end
 
 
+---------------------------------------------------------------------
 -- Get high scores for the current difficulty, mode and limit
+-- return -> an array of scores
+---------------------------------------------------------------------
 function HighScoreState:getCurrentScores()
     local scores = {}
     for i, score in ipairs(self.app.highScores) do
@@ -83,7 +108,7 @@ function HighScoreState:getCurrentScores()
         if score.gameType == self.app.currentMode:gameTypeString()
                 and score.limit == self.app.currentMode:limitToString()
                 and score.difficulty ==
-                self.app.currentMode:difficultyString() then
+                    self.app.currentMode:difficultyString() then
             -- add it to the current scores list
             scores[#scores + 1] = score
         end
@@ -91,4 +116,6 @@ function HighScoreState:getCurrentScores()
     return scores
 end
 
+
+-- Return the module
 return HighScoreState

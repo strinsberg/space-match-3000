@@ -3,12 +3,18 @@ AppState = require'src.states.AppState'
 ScreenArea = require'src.view.ScreenArea'
 assets = require 'assets.assets'
 
--- This is the parent class for the actual match 3 part of the game
--- It will include all code that must run during any point in the game
+-- TODO pull logic out of update and draw functions and put it
+-- into helpers
+---------------------------------------------------------------------
+-- Base class / Interface for all states in the game
+---------------------------------------------------------------------
 local GameState = Class(AppState)
 
 
--- Constructor for the state
+---------------------------------------------------------------------
+-- Initialize the state
+-- app -> the app the state is part of
+---------------------------------------------------------------------
 function GameState:init(app)
     AppState.init(self, app)
     self.boardArea = ScreenArea(240, 160, 320)
@@ -22,7 +28,10 @@ function GameState:init(app)
 end
 
 
--- Perfome all updates for the state
+---------------------------------------------------------------------
+-- Update the state
+-- dt -> delta time
+---------------------------------------------------------------------
 function GameState:update(dt)
     -- Super update
     AppState.update(self, dt)
@@ -46,7 +55,12 @@ function GameState:update(dt)
 end
 
 
--- Handle all mouse presses for the state
+---------------------------------------------------------------------
+-- Handler for mouse events
+-- x -> the x coord of the event
+-- y -> the y coord of the event
+-- button -> the mouse button pressed
+---------------------------------------------------------------------
 function GameState:mousePressed(x, y, button)
     AppState.mousePressed(self, x, y, button)
     
@@ -54,7 +68,10 @@ function GameState:mousePressed(x, y, button)
 end
 
 
--- Handle all key presses for the state
+---------------------------------------------------------------------
+-- Handler for key press events
+-- key -> the key pressed
+---------------------------------------------------------------------
 function GameState:keyPressed(key)
     AppState.keyPressed(self, key)
     
@@ -68,7 +85,9 @@ function GameState:keyPressed(key)
 end
 
 
--- Draw everything for the state
+---------------------------------------------------------------------
+-- Draw the state information
+---------------------------------------------------------------------
 function GameState:draw()
     -- Super draw
     AppState.draw(self)
@@ -133,7 +152,7 @@ function GameState:draw()
                 assets.blockSize * 2)
     assets.setColor()
     
-    -- draw menu like options
+    -- draw menu options
     self.menuArea:printCenter("(p)ause  -  (h)int  -  (q)uit",
             assets.blockSize * 1.5)
         
@@ -144,9 +163,9 @@ function GameState:draw()
 end
 
 
--- Helper methods
-
+---------------------------------------------------------------------
 -- Draw a block on the board
+---------------------------------------------------------------------
 function GameState:drawBlock(block, row, column)
     -- If the block is visible then draw it
     if block.isVisible then
@@ -155,4 +174,6 @@ function GameState:drawBlock(block, row, column)
     end
 end
 
+
+-- Return the module
 return GameState

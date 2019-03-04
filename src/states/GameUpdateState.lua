@@ -6,6 +6,13 @@ assets = require 'assets.assets'
 
 local GameUpdateState = Class(GameState)
 
+-- TODO pull out game logic into seperate methods from update etc.
+-- TODO rework the whole animations thing and how blocks move
+---------------------------------------------------------------------
+-- Initialize the state
+-- app -> the app the state is part of
+-- movingBlocks -> array of the blocks that are moving
+---------------------------------------------------------------------
 function GameUpdateState:init(app, movingBlocks)
     GameState.init(self, app)
     self.animations = self:createAnimations(movingBlocks)

@@ -28,6 +28,12 @@ function ScoreEntryState:mousePressed(x, y, button)
 end
 
 
+-- Should pull out the 'return' code into one or more functions
+-- or even a class if it is appropriate
+---------------------------------------------------------------------
+-- Handler for key press events
+-- key -> the key pressed
+---------------------------------------------------------------------
 function ScoreEntryState:keyPressed(key)
     AppState.keyPressed(self, key)
     if string.find(self.validChars, key) then
@@ -70,6 +76,9 @@ function ScoreEntryState:keyPressed(key)
 end
 
 
+---------------------------------------------------------------------
+-- Draw the state information
+---------------------------------------------------------------------
 function ScoreEntryState:draw()
     AppState.draw(self)
     assets.setColor('green')
@@ -82,4 +91,6 @@ function ScoreEntryState:draw()
     self.menuArea:printCenter("(enter) Continue", 0)
 end
 
+
+-- Return the module
 return ScoreEntryState

@@ -6,8 +6,13 @@ ScreenArea = require'src.view.ScreenArea'
 Mode = require'src.Mode'
 assets = require 'assets.assets'
 
+-- TODO pull out game logic from love callback functions
+-- TODO rework this process like in the other version you tested
+-- TODO get rid of cyclical includes
+
+
 -- The state when the game is running and the player can interact with it
--- as opposed to the game being paused or the board updateing
+-- as opposed to the game being paused or the board updating
 local GameRunState = Class(GameState)
 
 -- local variables

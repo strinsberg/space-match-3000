@@ -5,8 +5,17 @@ HelpState = require'src.states.HelpState'
 ScreenArea = require'src.view.ScreenArea'
 assets = require'assets.assets'
 
+---------------------------------------------------------------------
+-- The state of the app for the main menu
+-- AppState -> The base state for app states
+---------------------------------------------------------------------
 local MainMenuState = Class(AppState)
 
+
+---------------------------------------------------------------------
+-- Initialize the state
+-- app -> the app the state is part of
+---------------------------------------------------------------------
 function MainMenuState:init(app)
     AppState.init(self, app)
     self.menuArea = ScreenArea(240, 180, 320)
@@ -14,16 +23,33 @@ function MainMenuState:init(app)
     self.infoArea = ScreenArea(0, 560, app.width)
 end
 
+
+---------------------------------------------------------------------
+-- Update the state
+-- dt -> delta time
+---------------------------------------------------------------------
 function MainMenuState:update(dt)
     -- All game updates for the state
     AppState.update(self, dt)
 end
 
+
+---------------------------------------------------------------------
+-- Handler for mouse events
+-- x -> the x coord of the event
+-- y -> the y coord of the event
+-- button -> the mouse button pressed
+---------------------------------------------------------------------
 function MainMenuState:mousePressed(x, y, button)
     -- Handle mouse events for the state
     AppState.mousePressed(self, x, y, button)
 end
 
+
+---------------------------------------------------------------------
+-- Handler for key press events
+-- key -> the key pressed
+---------------------------------------------------------------------
 function MainMenuState:keyPressed(key)
     -- Handle key press events for the state
     AppState.keyPressed(self, key)
@@ -43,6 +69,10 @@ function MainMenuState:keyPressed(key)
     end
 end
 
+
+---------------------------------------------------------------------
+-- Draw the state information
+---------------------------------------------------------------------
 function MainMenuState:draw()
     -- Draw everything for the state to the screen
     AppState.draw(self)
@@ -65,4 +95,6 @@ function MainMenuState:draw()
     self.infoArea:printCenter(self.app.company, assets.fontSize)
 end
 
+
+-- Return the module
 return MainMenuState

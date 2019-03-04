@@ -5,6 +5,14 @@ functions = require'src.libFunctions'
 -- are called. the function with "Difficulty: " is redundant it can just be
 -- added in the draw function that renders it
 
+---------------------------------------------------------------------
+-- An object for the game type
+-- Should really be fixed. Probably splitting each mode into a
+-- different type would be good. And moving the function that changes
+-- the game mode to a differnt place. Thier can be a factory that
+-- creates a game mode with some parameters rather than a singleton
+-- mode object that is adjusted and has all mode behaviour in it
+---------------------------------------------------------------------
 local Mode = Class()
 
 -- Mode Constants and local variables

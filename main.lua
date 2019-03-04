@@ -4,15 +4,12 @@ App = require'src.App'
 Area = require'src.view.ScreenArea'
 serialize = require'src.serialize'
 
--- I think I might want to do all the imports in the main file and no where else.
--- It gets a bit messy and because the imports in lua actually run the file it
--- is problematic with state classes looping
-
 -- Get new random number set
 math.randomseed( os.time() )
 
 -- Create app
 app = App()
+
 
 -- Load all game assets
 function love.load()
@@ -23,6 +20,7 @@ function love.load()
     -- Load the high scores from the scores.dat file
     app.highScores = serialize.readHighScores()
 end
+
 
 -- Update all game elements
 function love.update(dt)
@@ -39,6 +37,7 @@ function love.update(dt)
         app.state:keyPressed(key)
     end
 end
+
 
 -- Draw all game elements
 function love.draw(dt)

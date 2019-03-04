@@ -1,15 +1,20 @@
 Class = require'src.Class'
 Match3Board = require'src.Match3Board'
 
+---------------------------------------------------------------------
+-- A match 3 game
+---------------------------------------------------------------------
 local Game = Class()
-
--- Game Constants
 
 -- Default board size
 Game.ROWS = 8
 Game.COLUMNS = 8
 
--- Create a game with a new board
+
+---------------------------------------------------------------------
+-- Initialize a new game.
+-- mode -> the game mode
+---------------------------------------------------------------------
 function Game:init(mode)
     self.mode = mode
     self.board = Match3Board(Game.ROWS, Game.COLUMNS, mode.difficulty)
@@ -22,15 +27,20 @@ function Game:init(mode)
 end
 
 
--- Add to score total for a group of matches
+---------------------------------------------------------------------
+-- Score a group of matches.
+-- matches -> an array of matches to score
+---------------------------------------------------------------------
 function Game:scoreMatches(matches)
-    for i, match_ in ipairs(matches) do
-        self:scoreMatch(match_.size)
+    for _, m in ipairs(matches) do
+        self:scoreMatch(m.size)
     end
 end
 
-
--- Score a match based on its length and the current modifier
+-- Should take a match and return a score, assign to score above
+---------------------------------------------------------------------
+-- Decide on the score for a match and add it to the game's score
+---------------------------------------------------------------------
 function Game:scoreMatch(size)
     local score = 0
     if size < 6 then
@@ -44,7 +54,9 @@ function Game:scoreMatch(size)
 end
 
 
--- Set the seleced block
+---------------------------------------------------------------------
+-- Set the selected block to row, column
+---------------------------------------------------------------------
 function Game:setSelection(row, column)
     -- If no arguments are given set selection to nil
     if not row or not column then
@@ -55,8 +67,12 @@ function Game:setSelection(row, column)
     end
 end
 
-
--- set hint block
+-- could probably be changed to reuse selection code
+-- also maybe come up with a different way to set nil or represent
+-- no hint or selection
+---------------------------------------------------------------------
+-- Set the hint block to row, column
+---------------------------------------------------------------------
 function Game:setHint(row, column)
     -- If no arguments are given set selection to nil
     if not row or not column then
@@ -67,4 +83,5 @@ function Game:setHint(row, column)
     end
 end
 
+-- Return module
 return Game
