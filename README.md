@@ -24,7 +24,7 @@ Supports several different modes
 # Download for Linux
 1. Download the .love file in /bin
 2. If love2d is not installed download and install it here https://love2d.org/
-3. Run  $ love space_match_3000.love
+3. In a terminal run  $> love space_match_3000.love
 
 # Download for Windows
 1. Download the space_match_3000_windows folder from /bin
