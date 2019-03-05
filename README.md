@@ -21,11 +21,11 @@ Supports several different modes
 - no limit refill
 - no limit no-refill
 
-# Download Linux
+# Download for Linux
 1. Download the .love file in /bin
 2. If love2d is not installed download and install it here https://love2d.org/
 3. Run  $ love space_match_3000.love
 
-# Download Windows
+# Download for Windows
 1. Download the space_match_3000_windows folder from /bin
 2. Run space_match_3000.exe
