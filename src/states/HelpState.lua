@@ -8,7 +8,7 @@ assets = require'assets.assets'
 local HelpState = Class(AppState)
 
 
--- The text could be done better
+
 ---------------------------------------------------------------------
 -- Initialize the state
 -- app -> the app the state is part of

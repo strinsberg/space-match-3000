@@ -5,6 +5,11 @@ HighScoreState = require'src.states.HighScoreState'
 
 local ScoreEntryState = Class(AppState)
 
+
+---------------------------------------------------------------------
+-- Initialize the state
+-- app -> the app the state is part of
+---------------------------------------------------------------------
 function ScoreEntryState:init(app, currentHighScores, otherHighScores)
     AppState.init(self, app)
     self.currentHighScores = currentHighScores
@@ -18,18 +23,26 @@ function ScoreEntryState:init(app, currentHighScores, otherHighScores)
 end
 
 
+---------------------------------------------------------------------
+-- Update the state
+-- dt -> delta time
+---------------------------------------------------------------------
 function ScoreEntryState:update(dt)
     AppState.update(self, dt)
 end
 
 
+---------------------------------------------------------------------
+-- Handler for mouse events
+-- x -> the x coord of the event
+-- y -> the y coord of the event
+-- button -> the mouse button pressed
+---------------------------------------------------------------------
 function ScoreEntryState:mousePressed(x, y, button)
     AppState.mousePressed(self, x, y, button)
 end
 
 
--- Should pull out the 'return' code into one or more functions
--- or even a class if it is appropriate
 ---------------------------------------------------------------------
 -- Handler for key press events
 -- key -> the key pressed

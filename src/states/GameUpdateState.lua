@@ -6,8 +6,7 @@ assets = require 'assets.assets'
 
 local GameUpdateState = Class(GameState)
 
--- TODO pull out game logic into seperate methods from update etc.
--- TODO rework the whole animations thing and how blocks move
+
 ---------------------------------------------------------------------
 -- Initialize the state
 -- app -> the app the state is part of
@@ -18,7 +17,11 @@ function GameUpdateState:init(app, movingBlocks)
     self.animations = self:createAnimations(movingBlocks)
 end
 
--- Update game elements
+
+---------------------------------------------------------------------
+-- Update the state
+-- dt -> delta time
+---------------------------------------------------------------------
 function GameUpdateState:update(dt)
     -- Super update
     GameState.update(self, dt)
@@ -47,21 +50,31 @@ function GameUpdateState:update(dt)
 end
 
 
--- Handle mouse press events for the state
+---------------------------------------------------------------------
+-- Handler for mouse events
+-- x -> the x coord of the event
+-- y -> the y coord of the event
+-- button -> the mouse button pressed
+---------------------------------------------------------------------
 function GameUpdateState:mousePressed(x, y, button)
     -- Super mouse events
     GameState.mousePressed(self, x, y, button)
 end
 
 
--- Handle key press events
+---------------------------------------------------------------------
+-- Handler for key press events
+-- key -> the key pressed
+---------------------------------------------------------------------
 function GameUpdateState:keyPressed(key)
     -- Super key events
     GameState.keyPressed(self, key)
 end
 
 
--- Draw everything for the state to the screen
+---------------------------------------------------------------------
+-- Draw the state information
+---------------------------------------------------------------------
 function GameUpdateState:draw()
     -- Super draw
     GameState.draw(self)
@@ -75,9 +88,12 @@ function GameUpdateState:draw()
     end
 end
 
--- Helper methods
 
+-- Helper methods --
+
+---------------------------------------------------------------------
 -- Create all the animations from a table of moving blocks
+---------------------------------------------------------------------
 function GameUpdateState:createAnimations(movingBlocks)
     local animations = {}
     for i, block in ipairs(movingBlocks) do
@@ -89,4 +105,5 @@ function GameUpdateState:createAnimations(movingBlocks)
     return animations
 end
 
+-- Return the module
 return GameUpdateState

@@ -1,5 +1,9 @@
 Class = require'src.Class'
 
+
+---------------------------------------------------------------------
+-- A simple animation for a moving object
+---------------------------------------------------------------------
 local Animation = Class()
 
 -- Constants
@@ -10,7 +14,15 @@ local DOWN = 3
 local LEFT = 4
 
 
--- Constructor
+---------------------------------------------------------------------
+-- Initialize an Animation.
+-- x -> the x coord of the top left corner
+-- y -> the y coord of the top left corner
+-- endx -> the destination for the x coord
+-- endy -> the destination for the y coord
+-- image -> the love2d image for the animation
+-- speed -> the number of pixels to move each (second?)
+---------------------------------------------------------------------
 function Animation:init(x, y, endX, endY, image, speed)
     self.x = x
     self.y = y
@@ -23,7 +35,9 @@ function Animation:init(x, y, endX, endY, image, speed)
 end
 
 
--- Set the direction
+---------------------------------------------------------------------
+-- Set the direction based on the starting and ending coordinates
+---------------------------------------------------------------------
 function Animation:setDirection()
     local xD = NONE
     local yD = NONE
@@ -40,7 +54,12 @@ function Animation:setDirection()
     return {x = xD, y = yD}
 end
 
--- Update the position of the animation -- could be split up i think
+
+---------------------------------------------------------------------
+-- Update the position of the animation. Set finished if the destination
+-- has been reached
+-- dt -> the delta time
+---------------------------------------------------------------------
 function Animation:update(dt)
     -- Update x coordinate
     -- Object is moving right and has not reached the end of its x journey
@@ -79,4 +98,6 @@ function Animation:update(dt)
     end
 end
 
+
+-- Return the module
 return Animation

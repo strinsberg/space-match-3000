@@ -5,19 +5,41 @@ assets = require 'assets.assets'
 
 local GamePauseState = Class(GameState)
 
+
+---------------------------------------------------------------------
+-- Initialize the state
+-- app -> the app the state is part of
+---------------------------------------------------------------------
 function GamePauseState:init(app, state)
     GameState.init(self, app)
     self.lastState = state
 end
 
+
+---------------------------------------------------------------------
+-- Update the state
+-- dt -> delta time
+---------------------------------------------------------------------
 function GamePauseState:update(dt)
     -- Do Nothing
 end
 
+
+---------------------------------------------------------------------
+-- Handler for mouse events
+-- x -> the x coord of the event
+-- y -> the y coord of the event
+-- button -> the mouse button pressed
+---------------------------------------------------------------------
 function GamePauseState:mousePressed(x, y, button)
     -- Do nothing
 end
 
+
+---------------------------------------------------------------------
+-- Handler for key press events
+-- key -> the key pressed
+---------------------------------------------------------------------
 function GamePauseState:keyPressed(key)
     -- Handle key press events for the state
     if key == 'q' then
@@ -30,7 +52,9 @@ function GamePauseState:keyPressed(key)
 end
 
 
--- Draw everything for the state to the screen
+---------------------------------------------------------------------
+-- Draw the state information
+---------------------------------------------------------------------
 function GamePauseState:draw()
     -- Draw whatever the previous state is
     self.lastState:draw()
@@ -41,4 +65,6 @@ function GamePauseState:draw()
     assets.setColor()
 end
 
+
+-- Return the module
 return GamePauseState

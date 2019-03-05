@@ -3,8 +3,6 @@ AppState = require'src.states.AppState'
 ScreenArea = require'src.view.ScreenArea'
 assets = require 'assets.assets'
 
--- TODO pull logic out of update and draw functions and put it
--- into helpers
 ---------------------------------------------------------------------
 -- Base class / Interface for all states in the game
 ---------------------------------------------------------------------

@@ -41,7 +41,6 @@ function Match3Board:setBoard()
 end
 
 
--- This can be done better! Check the pico version you started
 ---------------------------------------------------------------------
 -- Check to see if a block is matched with blocks around it.
 -- row -> the row of the block
@@ -155,9 +154,6 @@ function Match3Board:isAdjacentMove(row, column, newRow, newColumn)
 end
 
 
--- This should all definately be overhauled, as you can do it
--- in a simpler way, or at least not have almost identical code
--- for row and column
 ---------------------------------------------------------------------
 -- Get all the matches on teh board
 -- return an array of Matches
@@ -301,8 +297,9 @@ function Match3Board:getDroppingBlocks(refill)
     return droppingBlocks
 end
 
-
+---------------------------------------------------------------------
 -- Get a list of all blocks dropping in a column
+---------------------------------------------------------------------
 function Match3Board:getDroppingBlocksColumn(column, refill)
     local droppingBlocks = {}
     local emptyStart = nil
@@ -360,8 +357,10 @@ function Match3Board:dropBlocks(droppingBlocks)
 end
 
 
+---------------------------------------------------------------------
 -- Get a block at random from the board that can be moved to create a match
 -- Returns nil if there are none
+---------------------------------------------------------------------
 function Match3Board:getBlockWithMove()
     local blocksWithMoves = {}
     -- Loop through every item on the board
@@ -381,12 +380,14 @@ function Match3Board:getBlockWithMove()
 end
 
 
+---------------------------------------------------------------------
 -- Checks a block for matches if it was switched with the block to the right
 -- or below it. This is done because during looping moving up one row or
 -- column each loop means that the previous block already switched with the
 -- current block when it tested to the right or below. So it is not
 -- necessary to test above or to the left. Returns a block that can be moved
 -- to make a match or nil
+---------------------------------------------------------------------
 function Match3Board:getBlock(row, column)
     local blocks = {}
     -- Get a matched block if there is one between the block and the block
@@ -405,8 +406,10 @@ function Match3Board:getBlock(row, column)
 end
 
 
+---------------------------------------------------------------------
 -- If switching 2 blocks would create a match for either of them return
 -- the block that would have a match or nil
+---------------------------------------------------------------------
 function Match3Board:getSwitchMatch(row, column, row2, column2)
     local blocks = {}
     -- Switch the two blocks
@@ -423,6 +426,7 @@ function Match3Board:getSwitchMatch(row, column, row2, column2)
     -- Return a matched block or nil
     return blocks
 end
+
 
 -- For debuging ----------------------------------------
 function Match3Board:toString()
@@ -441,4 +445,6 @@ function Match3Board:toString()
     end
 end
 
+
+-- Return module
 return Match3Board

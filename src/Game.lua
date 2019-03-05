@@ -37,7 +37,7 @@ function Game:scoreMatches(matches)
     end
 end
 
--- Should take a match and return a score, assign to score above
+
 ---------------------------------------------------------------------
 -- Decide on the score for a match and add it to the game's score
 ---------------------------------------------------------------------
@@ -67,9 +67,7 @@ function Game:setSelection(row, column)
     end
 end
 
--- could probably be changed to reuse selection code
--- also maybe come up with a different way to set nil or represent
--- no hint or selection
+
 ---------------------------------------------------------------------
 -- Set the hint block to row, column
 ---------------------------------------------------------------------

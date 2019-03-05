@@ -21,7 +21,7 @@ function Block:init(numColors, row, column)
     self.row = row
     self.column = column
     
-    -- For moving blocks -- This may be in need of adjusting
+    -- For moving blocks
     self.isVisible = true -- Wether or not the block can be seen
     self.moveRow = nil -- The row a block is moving from
     self.moveColumn = nil -- The column a block is moving from

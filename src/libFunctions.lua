@@ -22,7 +22,7 @@ function M.empty2dArray(rows, cols)
     return array
 end
 
--- Should create a new array or not return anything!
+
 ---------------------------------------------------------------------
 -- Appends one array onto another.
 -- array -> the array to append onto
@@ -49,7 +49,6 @@ function M.printArray(array)
 end
 
 
--- Convert seconds as minute:seconds
 ---------------------------------------------------------------------
 -- Converts seconds into a string of "min:sec".
 -- seconds -> a positive integer of second

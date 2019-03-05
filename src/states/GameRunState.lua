@@ -6,10 +6,6 @@ ScreenArea = require'src.view.ScreenArea'
 Mode = require'src.Mode'
 assets = require 'assets.assets'
 
--- TODO pull out game logic from love callback functions
--- TODO rework this process like in the other version you tested
--- TODO get rid of cyclical includes
-
 
 -- The state when the game is running and the player can interact with it
 -- as opposed to the game being paused or the board updating
@@ -19,10 +15,19 @@ local GameRunState = Class(GameState)
 local updateBoard = false
 local switchBack = nil
 
+---------------------------------------------------------------------
+-- Initialize the state
+-- app -> the app the state is part of
+---------------------------------------------------------------------
 function GameRunState:init(app)
     GameState.init(self, app)
 end
 
+
+---------------------------------------------------------------------
+-- Update the state
+-- dt -> delta time
+---------------------------------------------------------------------
 function GameRunState:update(dt)
     -- All game updates for the state
     GameState.update(self, dt)
@@ -78,7 +83,12 @@ function GameRunState:update(dt)
 end
 
 
--- Handle mouse press events for the state
+---------------------------------------------------------------------
+-- Handler for mouse events
+-- x -> the x coord of the event
+-- y -> the y coord of the event
+-- button -> the mouse button pressed
+---------------------------------------------------------------------
 function GameRunState:mousePressed(x, y, button)
     -- Super mouse events
     GameState.mousePressed(self, x, y, button)
@@ -134,7 +144,10 @@ function GameRunState:mousePressed(x, y, button)
 end
 
 
--- Handle key press events
+---------------------------------------------------------------------
+-- Handler for key press events
+-- key -> the key pressed
+---------------------------------------------------------------------
 function GameRunState:keyPressed(key)
     -- Super key events
     GameState.keyPressed(self, key)
@@ -148,7 +161,9 @@ function GameRunState:keyPressed(key)
 end
 
 
--- Draw everything for the state to the screen
+---------------------------------------------------------------------
+-- Draw the state information
+---------------------------------------------------------------------
 function GameRunState:draw()
     -- Super draw
     GameState.draw(self)
@@ -157,14 +172,18 @@ end
 
 -- Helper methods --
 
+---------------------------------------------------------------------
 -- Get the row and column for a click position with an x and y value
+---------------------------------------------------------------------
 function GameRunState:clickIndex(x, y)
     row = math.floor((y - self.boardArea.y) / assets.blockSize) + 1
     column = math.floor((x - self.boardArea.x) / assets.blockSize) + 1
     return row, column
 end
 
+---------------------------------------------------------------------
 -- Make sure the click is on the board
+---------------------------------------------------------------------
 function GameRunState:isClickOnBoard(row, column)
     if row < 1 or row > self.board.rows
             or column < 1 or column > self.board.rows then
@@ -173,7 +192,9 @@ function GameRunState:isClickOnBoard(row, column)
     return true
 end
 
+---------------------------------------------------------------------
 -- Check to see if there are any moves left. If there are not then reset board
+---------------------------------------------------------------------
 function GameRunState:checkForMoves()
     local blockWithMove = self.board:getBlockWithMove()
     if not blockWithMove then
@@ -186,7 +207,9 @@ function GameRunState:checkForMoves()
     end
 end
 
+---------------------------------------------------------------------
 -- Get high scores for the current difficulty, mode and limit
+---------------------------------------------------------------------
 function GameRunState:getCurrentScores()
     local currentScores = {}
     local otherScores = {}
@@ -205,7 +228,9 @@ function GameRunState:getCurrentScores()
     return currentScores, otherScores
 end
 
+---------------------------------------------------------------------
 -- Find out if the score is high enough to be a high score
+---------------------------------------------------------------------
 function GameRunState:isHighScore(playerScore, highScores)
     for i, score in ipairs(highScores) do
         if playerScore > score.score then
@@ -215,4 +240,5 @@ function GameRunState:isHighScore(playerScore, highScores)
     return false
 end
 
+-- Return the module
 return GameRunState
