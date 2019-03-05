@@ -2,7 +2,7 @@
 
 A very simple match 3 game.
 
-This is the first full program I developed. The software design is not ideal, But I learned a great deal.
+This is the first full program I developed. The software design is not ideal, But I learned so much.
 
 # Playing the game
 All menus can be navigated by pressing the key that is in brackets. ie. (n)ew game  - start a new game by pressing 'n'
