@@ -4,7 +4,9 @@ A very simple match 3 game.
 
 This is the first full program I developed. The software design is not ideal, But I learned so much.
 
-~~Can now be played online at https://strinsberg.github.io/space_match_3000/index.html. May take a while to load as it is not exactly designed to be a web app. Powered by LOVE https://love2d.org/ and love.js https://github.com/TannerRogalsky/love.js/.~~ **Web player is currently broken**
+[Play Online](https://strinsberg.github.io/space-match-3000/).
+
+Powered by LOVE https://love2d.org/ and love.js https://github.com/TannerRogalsky/love.js/.
 
 # Playing the game
 All menus can be navigated by pressing the key that is in brackets. ie. (n)ew game  - start a new game by pressing 'n'
